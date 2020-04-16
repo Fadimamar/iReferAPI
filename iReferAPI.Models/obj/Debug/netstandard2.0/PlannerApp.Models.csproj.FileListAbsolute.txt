@@ -1,0 +1,9 @@
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\bin\Debug\netstandard2.0\PlannerApp.Models.deps.json
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\bin\Debug\netstandard2.0\PlannerApp.Models.dll
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\bin\Debug\netstandard2.0\PlannerApp.Models.pdb
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\obj\Debug\netstandard2.0\PlannerApp.Models.csprojAssemblyReference.cache
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\obj\Debug\netstandard2.0\PlannerApp.Models.csproj.CoreCompileInputs.cache
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\obj\Debug\netstandard2.0\PlannerApp.Models.AssemblyInfoInputs.cache
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\obj\Debug\netstandard2.0\PlannerApp.Models.AssemblyInfo.cs
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\obj\Debug\netstandard2.0\PlannerApp.Models.dll
+C:\Workspaces\plannerapp_api-master\src\PlannerApp.Models\obj\Debug\netstandard2.0\PlannerApp.Models.pdb
