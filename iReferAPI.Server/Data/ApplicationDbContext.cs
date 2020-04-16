@@ -15,8 +15,7 @@ namespace iReferAPI.Server.Data
         {
         }
 
-        public DbSet<ToDoItem> ToDoItems { get; set; }
-        public DbSet<Plan> Plans { get; set; }
+      
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Agency> Agencies { get; set; }
     }

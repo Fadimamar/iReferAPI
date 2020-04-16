@@ -234,7 +234,7 @@ namespace iReferAPI.Server.Data.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("ToDoItems");
+                    b.ToTable("ToDoAccounts");
                 });
 
             modelBuilder.Entity("iReferAPI.Server.Models.ApplicationUser", b =>
@@ -366,7 +366,7 @@ namespace iReferAPI.Server.Data.Migrations
             modelBuilder.Entity("iReferAPI.Models.ToDoItem", b =>
                 {
                     b.HasOne("iReferAPI.Models.Plan", "Plan")
-                        .WithMany("ToDoItems")
+                        .WithMany("ToDoAccounts")
                         .HasForeignKey("PlanId");
                 });
 #pragma warning restore 612, 618

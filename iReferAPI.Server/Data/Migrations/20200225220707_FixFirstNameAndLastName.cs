@@ -40,7 +40,7 @@ namespace iReferAPI.Server.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ToDoItems",
+                name: "ToDoAccounts",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -56,9 +56,9 @@ namespace iReferAPI.Server.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ToDoItems", x => x.Id);
+                    table.PrimaryKey("PK_ToDoAccounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ToDoItems_Plans_PlanId",
+                        name: "FK_ToDoAccounts_Plans_PlanId",
                         column: x => x.PlanId,
                         principalTable: "Plans",
                         principalColumn: "Id",
@@ -66,15 +66,15 @@ namespace iReferAPI.Server.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ToDoItems_PlanId",
-                table: "ToDoItems",
+                name: "IX_ToDoAccounts_PlanId",
+                table: "ToDoAccounts",
                 column: "PlanId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ToDoItems");
+                name: "ToDoAccounts");
 
             migrationBuilder.DropTable(
                 name: "Plans");

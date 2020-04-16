@@ -7,58 +7,57 @@ using System.Threading.Tasks;
 
 namespace iReferAPI.Server.Services
 {
-    public interface IItemsService
+    public interface IAccountsService
     {
 
-        IEnumerable<ToDoItem> GetAllItems(string planId, string userId);
+        IEnumerable<Account> GetAgencyAccounts(string agencyid, string userId);
 
-        IEnumerable<ToDoItem> GetNotAchievedItems(string userId);
+        IEnumerable<Account> GetAllAccounts(string userId);
 
-        Task<ToDoItem> CreateItemAsync(string planId, string description, DateTime? estimatedDate, string userId);
+        Task<Account> CreateAccountAsync(string agencyId, string referralUrl, string referralcode, string userId);
 
-        Task<ToDoItem> EditItemsAsync(string itemId, string newDescritption, DateTime? estimatedDate, string userId);
+        Task<Account> EditAccountsAsync(string accountId, string referralUrl, string referralcode, string userId);
 
-        Task<ToDoItem> MarkItemAsync(string itemId, string userId);
+        
 
-        Task<ToDoItem> DeleteItemAsync(string itemId, string userId);
+        Task<Account> DeleteAccountAsync(string itemId, string userId);
 
     }
 
-    public class ToDoItemsService : IItemsService
+    public class AccountsService : IAccountsService
     {
 
         private readonly ApplicationDbContext _db;
 
-        public ToDoItemsService(ApplicationDbContext db)
+        public AccountsService(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        public async Task<ToDoItem> CreateItemAsync(string planId, string description, DateTime? estimatedDate, string userId)
+        public async Task<Account> CreateAccountAsync(string agencyId, string referralUrl, string referralcode, string userId)
         {
             // Check the plan if existing 
-            var plan = await _db.Plans.FindAsync(planId);
+            var plan = await _db.Agencies.FindAsync(agencyId);
             if (plan == null)
                 return null;
 
-            var item = new ToDoItem
+            var item = new Account
             {
-                Description = description,
-                EstimatedDate = estimatedDate,
-                IsDone = false,
-                PlanId = planId,
+                ReferralURL = referralUrl,
+                ReferralCode = referralcode,
+                AgencyId = agencyId,
                 UserId = userId
             };
 
-            await _db.ToDoItems.AddAsync(item);
+            await _db.Accounts.AddAsync(item);
             await _db.SaveChangesAsync();
 
-            return item; 
+            return item;
         }
 
-        public async Task<ToDoItem> DeleteItemAsync(string itemId, string userId)
+        public async Task<Account> DeleteAccountAsync(string accountId, string userId)
         {
-            var item = await _db.ToDoItems.FindAsync(itemId);
+            var item = await _db.Accounts.FindAsync(accountId);
             if (item == null || userId != item.UserId)
                 return null;
 
@@ -67,52 +66,39 @@ namespace iReferAPI.Server.Services
 
             await _db.SaveChangesAsync();
 
-            return item; 
-        }
-
-        public async Task<ToDoItem> EditItemsAsync(string itemId, string newDescritption, DateTime? estimatedDate, string userId)
-        {
-            var item = await _db.ToDoItems.FindAsync(itemId);
-
-            if (item == null || userId != item.UserId || item.IsDone)
-                return null;
-
-            item.Description = newDescritption;
-            item.ModifiedDate = DateTime.UtcNow;
-            item.EstimatedDate = estimatedDate;
-
-            await _db.SaveChangesAsync();
-
             return item;
         }
 
-        public IEnumerable<ToDoItem> GetAllItems(string planId, string userId)
+        public async Task<Account> EditAccountsAsync(string accountId, string referralUrl, string referralcode, string userId)
         {
-            var items = _db.ToDoItems.Where(i => i.PlanId == planId && !i.IsDeleted && i.UserId == userId).ToArray();
-
-            return items; 
-        }
-
-        public IEnumerable<ToDoItem> GetNotAchievedItems(string userId)
-        {
-            var items = _db.ToDoItems.Where(i => !i.IsDone && !i.IsDeleted && i.UserId == userId).ToArray();
-
-            return items;
-        }
-
-        public async Task<ToDoItem> MarkItemAsync(string itemId, string userId)
-        {
-            var item = await _db.ToDoItems.FindAsync(itemId);
+            var item = await _db.Accounts.FindAsync(accountId);
 
             if (item == null || userId != item.UserId)
                 return null;
 
-            item.IsDone = !item.IsDone;
-            item.ModifiedDate = DateTime.UtcNow;
+            item.ReferralURL = referralUrl;
+            item.ReferralCode = referralcode;
+            item.UserId = userId;
 
             await _db.SaveChangesAsync();
 
             return item;
         }
+
+        public IEnumerable<Account> GetAgencyAccounts(string agencyid, string userId)
+        {
+            var Accounts = _db.Accounts.Where(i => i.AgencyId == agencyid && !i.IsDeleted && i.UserId == userId).ToArray();
+
+            return Accounts;
+        }
+
+        public IEnumerable<Account> GetAllAccounts(string userId)
+        {
+            var Accounts = _db.Accounts.Where(i => !i.IsDeleted && i.UserId == userId).ToArray();
+
+            return Accounts;
+        }
+
+        
     }
 }

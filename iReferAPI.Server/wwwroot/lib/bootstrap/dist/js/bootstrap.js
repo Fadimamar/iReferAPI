@@ -634,7 +634,7 @@
   /*#__PURE__*/
   function () {
     function Carousel(element, config) {
-      this._items = null;
+      this._Accounts = null;
       this._interval = null;
       this._activeElement = null;
       this._isPaused = false;
@@ -711,7 +711,7 @@
 
       var activeIndex = this._getItemIndex(this._activeElement);
 
-      if (index > this._items.length - 1 || index < 0) {
+      if (index > this._Accounts.length - 1 || index < 0) {
         return;
       }
 
@@ -730,13 +730,13 @@
 
       var direction = index > activeIndex ? Direction.NEXT : Direction.PREV;
 
-      this._slide(direction, this._items[index]);
+      this._slide(direction, this._Accounts[index]);
     };
 
     _proto.dispose = function dispose() {
       $(this._element).off(EVENT_KEY$2);
       $.removeData(this._element, DATA_KEY$2);
-      this._items = null;
+      this._Accounts = null;
       this._config = null;
       this._element = null;
       this._interval = null;
@@ -892,8 +892,8 @@
     };
 
     _proto._getItemIndex = function _getItemIndex(element) {
-      this._items = element && element.parentNode ? [].slice.call(element.parentNode.querySelectorAll(Selector$2.ITEM)) : [];
-      return this._items.indexOf(element);
+      this._Accounts = element && element.parentNode ? [].slice.call(element.parentNode.querySelectorAll(Selector$2.ITEM)) : [];
+      return this._Accounts.indexOf(element);
     };
 
     _proto._getItemByDirection = function _getItemByDirection(direction, activeElement) {
@@ -902,7 +902,7 @@
 
       var activeIndex = this._getItemIndex(activeElement);
 
-      var lastItemIndex = this._items.length - 1;
+      var lastItemIndex = this._Accounts.length - 1;
       var isGoingToWrap = isPrevDirection && activeIndex === 0 || isNextDirection && activeIndex === lastItemIndex;
 
       if (isGoingToWrap && !this._config.wrap) {
@@ -910,8 +910,8 @@
       }
 
       var delta = direction === Direction.PREV ? -1 : 1;
-      var itemIndex = (activeIndex + delta) % this._items.length;
-      return itemIndex === -1 ? this._items[this._items.length - 1] : this._items[itemIndex];
+      var itemIndex = (activeIndex + delta) % this._Accounts.length;
+      return itemIndex === -1 ? this._Accounts[this._Accounts.length - 1] : this._Accounts[itemIndex];
     };
 
     _proto._triggerSlideEvent = function _triggerSlideEvent(relatedTarget, eventDirectionName) {
@@ -1552,7 +1552,7 @@
     FORM_CHILD: '.dropdown form',
     MENU: '.dropdown-menu',
     NAVBAR_NAV: '.navbar-nav',
-    VISIBLE_ITEMS: '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)'
+    VISIBLE_Accounts: '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)'
   };
   var AttachmentMap = {
     TOP: 'top-start',
@@ -1955,20 +1955,20 @@
         return;
       }
 
-      var items = [].slice.call(parent.querySelectorAll(Selector$4.VISIBLE_ITEMS));
+      var Accounts = [].slice.call(parent.querySelectorAll(Selector$4.VISIBLE_Accounts));
 
-      if (items.length === 0) {
+      if (Accounts.length === 0) {
         return;
       }
 
-      var index = items.indexOf(event.target);
+      var index = Accounts.indexOf(event.target);
 
       if (event.which === ARROW_UP_KEYCODE && index > 0) {
         // Up
         index--;
       }
 
-      if (event.which === ARROW_DOWN_KEYCODE && index < items.length - 1) {
+      if (event.which === ARROW_DOWN_KEYCODE && index < Accounts.length - 1) {
         // Down
         index++;
       }
@@ -1977,7 +1977,7 @@
         index = 0;
       }
 
-      items[index].focus();
+      Accounts[index].focus();
     };
 
     _createClass(Dropdown, null, [{
@@ -3672,10 +3672,10 @@
     ACTIVE: '.active',
     NAV_LIST_GROUP: '.nav, .list-group',
     NAV_LINKS: '.nav-link',
-    NAV_ITEMS: '.nav-item',
-    LIST_ITEMS: '.list-group-item',
+    NAV_Accounts: '.nav-item',
+    LIST_Accounts: '.list-group-item',
     DROPDOWN: '.dropdown',
-    DROPDOWN_ITEMS: '.dropdown-item',
+    DROPDOWN_Accounts: '.dropdown-item',
     DROPDOWN_TOGGLE: '.dropdown-toggle'
   };
   var OffsetMethod = {
@@ -3698,7 +3698,7 @@
       this._element = element;
       this._scrollElement = element.tagName === 'BODY' ? window : element;
       this._config = this._getConfig(config);
-      this._selector = this._config.target + " " + Selector$8.NAV_LINKS + "," + (this._config.target + " " + Selector$8.LIST_ITEMS + ",") + (this._config.target + " " + Selector$8.DROPDOWN_ITEMS);
+      this._selector = this._config.target + " " + Selector$8.NAV_LINKS + "," + (this._config.target + " " + Selector$8.LIST_Accounts + ",") + (this._config.target + " " + Selector$8.DROPDOWN_Accounts);
       this._offsets = [];
       this._targets = [];
       this._activeTarget = null;
@@ -3857,9 +3857,9 @@
         $link.addClass(ClassName$8.ACTIVE); // Set triggered links parents as active
         // With both <ul> and <nav> markup a parent is the previous sibling of any nav ancestor
 
-        $link.parents(Selector$8.NAV_LIST_GROUP).prev(Selector$8.NAV_LINKS + ", " + Selector$8.LIST_ITEMS).addClass(ClassName$8.ACTIVE); // Handle special case when .nav-link is inside .nav-item
+        $link.parents(Selector$8.NAV_LIST_GROUP).prev(Selector$8.NAV_LINKS + ", " + Selector$8.LIST_Accounts).addClass(ClassName$8.ACTIVE); // Handle special case when .nav-link is inside .nav-item
 
-        $link.parents(Selector$8.NAV_LIST_GROUP).prev(Selector$8.NAV_ITEMS).children(Selector$8.NAV_LINKS).addClass(ClassName$8.ACTIVE);
+        $link.parents(Selector$8.NAV_LIST_GROUP).prev(Selector$8.NAV_Accounts).children(Selector$8.NAV_LINKS).addClass(ClassName$8.ACTIVE);
       }
 
       $(this._scrollElement).trigger(Event$8.ACTIVATE, {
@@ -4008,8 +4008,8 @@
       var selector = Util.getSelectorFromElement(this._element);
 
       if (listElement) {
-        var itemSelector = listElement.nodeName === 'UL' || listElement.nodeName === 'OL' ? Selector$9.ACTIVE_UL : Selector$9.ACTIVE;
-        previous = $.makeArray($(listElement).find(itemSelector));
+        var Accountselector = listElement.nodeName === 'UL' || listElement.nodeName === 'OL' ? Selector$9.ACTIVE_UL : Selector$9.ACTIVE;
+        previous = $.makeArray($(listElement).find(Accountselector));
         previous = previous[previous.length - 1];
       }
 

@@ -69,9 +69,9 @@ namespace iReferAPI.Server
             });
 
             services.AddScoped<IUserService, UserService>();
-            services.AddTransient<IPlansService, PlansService>();
+           
             services.AddTransient<IAgenciesService, AgenciesService>();
-            services.AddTransient<IItemsService, ToDoItemsService>();
+            services.AddTransient<IAccountsService, AccountsService>();
 
             services.AddSwaggerGen(options =>
             {
