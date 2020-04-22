@@ -12,8 +12,7 @@ namespace iReferAPI.Models
         [StringLength(300)]
         public string ReferralURL { get; set; }
 
-        
-       
+             
         public string ReferralCode { get; set; }
 
         public Agency Agency { get; set; }

@@ -36,6 +36,6 @@ namespace iReferAPI.Models
        
         [StringLength(256)]
         public string Logo { get; set; }
-        public ICollection<Account> Accounts { get; set; }
+ 
     }
 }
