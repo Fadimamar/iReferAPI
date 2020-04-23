@@ -18,9 +18,8 @@ namespace iReferAPI.Server.Data
       
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Agency> Agencies { get; set; }
-        public DbSet<AgencyReward>AgencyRewards { get; set; }
-        public DbSet<CouponReward>CouponRewards { get; set; }
-        public DbSet<PointReward> PointRewards { get; set; }
-        public DbSet<CustomReward> CustomRewards { get; set; }
+        public DbSet<Reward>Rewards { get; set; }
+       
+
     }
 }

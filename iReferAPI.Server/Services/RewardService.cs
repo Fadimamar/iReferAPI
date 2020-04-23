@@ -10,15 +10,13 @@ namespace iReferAPI.Server.Services
     public interface IRewardsService
     {
 
-        Task<CouponReward> GetCouponRewardDetail(string agencyrewardID);
-        Task<CustomReward> GetCustomRewardDetail(string agencyrewardID);
-        Task<PointReward> GetPointRewardDetail(string agencyrewardID);
-        Task<AgencyReward> GetActiveReward(string agencyid, string userId);
-        IEnumerable<AgencyReward> GetAllAgencyRewards(string agencyid, string userId);
-        Task<CouponReward> AddCouponRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId);
-        Task<CustomReward> AddCustomRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId);
-        Task<PointReward> AddPointRewardAsync(string agencyId, int rewardreviewdays, decimal equivalentdollarAmount, int pointsamount, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId);
-
+        
+        Task<Reward> GetActiveReward(string agencyid);
+        IEnumerable<Reward> GetAllAgencyRewards(string agencyid);
+        Task<Reward> AddCouponRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId);
+        Task<Reward> AddCustomRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, string message, bool noexpiration, string userId);
+        Task<Reward> AddPointRewardAsync(string agencyId, int rewardreviewdays, decimal equivalentdollarAmount, int pointsamount, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId);
+        Task<Reward> AddCashRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, decimal cashAmount, string message, bool noexpiration, string userId);
     }
 
     public class RewardsService : IRewardsService
@@ -31,150 +29,144 @@ namespace iReferAPI.Server.Services
             _db = db;
         }
 
-        public async Task<CouponReward> AddCouponRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId)
+        public async Task<Reward> AddCouponRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId)
         {
             var agency = await _db.Agencies.FindAsync(agencyId);
             if (agency == null)
                 return null;
-            var item = new AgencyReward
+            var item = new Reward
             {
                 AgencyId = agencyId,
                 RewardReviewDays = rewardreviewdays,
-                RewardType = "Coupon",
-
-                UserId = userId,
-
-            };
-            await _db.AgencyRewards.AddAsync(item);
-            await _db.SaveChangesAsync();
-            var citem = new CouponReward
-            {
-                AgencyRewardId = item.Id,
+                RewardType = RewardTypes.Coupon,
+                UserId = userId,           
                 Description = description,
                 ExpirationDate = expirationDate,
                 DiscountRate = discount,
-                Message = message,
-                UserId = userId,
+                Message = message, 
                 NoExpiration = noexpiration,
                 IsDeleted = false,
                 ModifiedDate = DateTime.UtcNow
             };
-            await _db.CouponRewards.AddAsync(citem);
+            await _db.Rewards.AddAsync(item);
             await _db.SaveChangesAsync();
-            return citem;
+            return item;
         }
-        public async Task<CustomReward> AddCustomRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId)
+        public async Task<Reward> AddCustomRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate,  string message, bool noexpiration, string userId)
         {
             var agency = await _db.Agencies.FindAsync(agencyId);
             if (agency == null)
                 return null;
-            var item = new AgencyReward
+            var item = new Reward
             {
                 AgencyId = agencyId,
                 RewardReviewDays = rewardreviewdays,
-                RewardType = "Custom",
-
+                RewardType = RewardTypes.Custom,
                 UserId = userId,
-                IsDeleted = false,
-                ModifiedDate = DateTime.UtcNow
-
-            };
-            await _db.AgencyRewards.AddAsync(item);
-            await _db.SaveChangesAsync();
-            var citem = new CustomReward
-            {
-                AgencyRewardId = item.Id,
-                Description = description,
-                ExpirationDate = expirationDate, 
-                Message = message,
-                UserId = userId,
-                NoExpiration = noexpiration,
-                IsDeleted = false,
-                ModifiedDate = DateTime.UtcNow
-            };
-            await _db.CustomRewards.AddAsync(citem);
-            await _db.SaveChangesAsync();
-            return citem;
-        }
-        public async Task<PointReward> AddPointRewardAsync(string agencyId, int rewardreviewdays, decimal equivalentdollarAmount, int pointsamount, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId)
-        {
-            var agency = await _db.Agencies.FindAsync(agencyId);
-            if (agency == null)
-                return null;
-            var item = new AgencyReward
-            {
-                AgencyId = agencyId,
-                RewardReviewDays = rewardreviewdays,
-                RewardType = "Point",
-
-                UserId = userId,
-                IsDeleted = false,
-                ModifiedDate = DateTime.UtcNow
-
-            };
-            await _db.AgencyRewards.AddAsync(item);
-            await _db.SaveChangesAsync();
-            var citem = new PointReward
-            {
-                AgencyRewardId = item.Id,
                 Description = description,
                 ExpirationDate = expirationDate,
                 Message = message,
-                UserId = userId,
-                EquivalentDollarAmount = equivalentdollarAmount,
-                PointsAmount = pointsamount,
                 NoExpiration = noexpiration,
                 IsDeleted = false,
-            ModifiedDate = DateTime.UtcNow
-        };
-            await _db.PointRewards.AddAsync(citem);
+                ModifiedDate = DateTime.UtcNow
+            };
+            await _db.Rewards.AddAsync(item);
             await _db.SaveChangesAsync();
-            return citem;
+            return item;
         }
-            public IEnumerable<AgencyReward> GetAllAgencyRewards(string agencyid, string userId)
+        public async Task<Reward> AddCashRewardAsync(string agencyId, int rewardreviewdays, string description, DateTime expirationDate, decimal cashAmount, string message, bool noexpiration, string userId)
+        {
+            var agency = await _db.Agencies.FindAsync(agencyId);
+            if (agency == null)
+                return null;
+            var item = new Reward
             {
-                var AgencyRewards = _db.AgencyRewards.Where(i => i.AgencyId== agencyid).ToArray();
+                AgencyId = agencyId,
+                RewardReviewDays = rewardreviewdays,
+                RewardType = RewardTypes.Custom,
+                UserId = userId,
+                Description = description,
+                ExpirationDate = expirationDate,
+                Message = message,
+                NoExpiration = noexpiration,
+                IsDeleted = false,
+                ModifiedDate = DateTime.UtcNow,
+                CashAmount=cashAmount
+            };
+            await _db.Rewards.AddAsync(item);
+            await _db.SaveChangesAsync();
+            return item;
+        }
+        public async Task<Reward> AddPointRewardAsync(string agencyId, int rewardreviewdays, decimal equivalentdollarAmount, int pointsamount, string description, DateTime expirationDate, float discount, string message, bool noexpiration, string userId)
+        {
+            var agency = await _db.Agencies.FindAsync(agencyId);
+            if (agency == null)
+                return null;
+            var item = new Reward
+            {
+                AgencyId = agencyId,
+                RewardReviewDays = rewardreviewdays,
+                RewardType = RewardTypes.Points,
+
+                UserId = userId,
+                IsDeleted = false,
+                ModifiedDate = DateTime.UtcNow,
+                Description = description,
+                ExpirationDate = expirationDate,
+                Message = message,
+                EquivalentDollarAmount = equivalentdollarAmount,
+                PointsAmount = pointsamount,
+                NoExpiration = noexpiration
+                
+        };
+            await _db.Rewards.AddAsync(item);
+            await _db.SaveChangesAsync();
+            return item;
+        }
+            public IEnumerable<Reward> GetAllAgencyRewards(string agencyid)
+            {
+                var AgencyRewards = _db.Rewards.Where(i => i.AgencyId== agencyid).ToArray();
 
                 return AgencyRewards;
             }
-        public async Task<AgencyReward> GetActiveReward(string agencyid, string userId)
+        public async Task<Reward> GetActiveReward(string agencyid)
         {
             var agency = await _db.Agencies.FindAsync(agencyid);
             if (agency == null)
                 return null;
-            var agencyreward =  _db.AgencyRewards.Where(i => i.AgencyId == agencyid && !i.IsDeleted);
+            var agencyreward =  _db.Rewards.Where(i => i.AgencyId == agencyid && !i.IsDeleted);
 
-            return (AgencyReward)agencyreward;
+            return (Reward)agencyreward;
         }
-        public async Task<CouponReward> GetCouponRewardDetail(string agencyrewardid)
-        {
+        //public async Task<Reward> GetCouponRewardDetail(string agencyrewardid)
+        //{
            
-            var agencyReward = await _db.AgencyRewards.FindAsync(agencyrewardid);
-            if (agencyReward == null)
-                return null;
-            var Couponreward = _db.CouponRewards.Where(i => i.AgencyRewardId == agencyrewardid);
-            return (CouponReward)Couponreward;
-        }
-        public async Task<CustomReward> GetCustomRewardDetail(string agencyrewardid)
-        {
+        //    var agencyReward = await _db.Rewards.FindAsync(agencyrewardid);
+        //    if (agencyReward == null)
+        //        return null;
+        //    var Couponreward = _db.Rewards.Where(i => i.AgencyId == agencyrewardid);
+        //    return (Reward)Couponreward;
+        //}
+        //public async Task<Reward> GetCustomRewardDetail(string agencyrewardid)
+        //{
 
-            var agencyReward = await _db.AgencyRewards.FindAsync(agencyrewardid);
-            if (agencyReward == null)
-                return null;
-            var customreward = _db.CustomRewards.Where(i => i.AgencyRewardId == agencyrewardid);
-            return (CustomReward)customreward;
-        }
-        public async Task<PointReward> GetPointRewardDetail(string agencyrewardid)
-        {
+        //    var agencyReward = await _db.Rewards.FindAsync(agencyrewardid);
+        //    if (agencyReward == null)
+        //        return null;
+        //    var customreward = _db.Rewards.Where(i => i.AgencyId == agencyrewardid);
+        //    return (Reward)customreward;
+        //}
+        //public async Task<Reward> GetPointRewardDetail(string agencyrewardid)
+        //{
 
-            var agencyReward = await _db.AgencyRewards.FindAsync(agencyrewardid);
-            if (agencyReward == null)
-                return null;
-            var pointreward = _db.CustomRewards.Where(i => i.AgencyRewardId == agencyrewardid);
-            return (PointReward)pointreward;
-        }
+        //    var agencyReward = await _db.Rewards.FindAsync(agencyrewardid);
+        //    if (agencyReward == null)
+        //        return null;
+        //    var pointreward = _db.Rewards.Where(i => i.AgencyId == agencyrewardid);
+        //    return (Reward)pointreward;
+        //}
     }
     }
-}
+
 
     
