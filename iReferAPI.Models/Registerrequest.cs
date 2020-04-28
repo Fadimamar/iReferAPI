@@ -5,6 +5,7 @@ using System.Text;
 
 namespace iReferAPI.Models
 {
+ 
     public class RegisterRequest
     {
 
@@ -12,7 +13,7 @@ namespace iReferAPI.Models
         [StringLength(50)]
         [EmailAddress]
         public string Email { get; set; }
-
+        
         [Required]
         [StringLength(25)]
         public string FirstName { get; set; }
@@ -28,6 +29,10 @@ namespace iReferAPI.Models
         [Required]
         [StringLength(50, MinimumLength = 5)]
         public string ConfirmPassword { get; set; }
+       
+
+
 
     }
+   
 }

@@ -21,12 +21,15 @@ namespace iReferAPI.Server.Controllers
 
         private readonly IAgenciesService _AgenciesService;
         private readonly IConfiguration _configuration;
+      
 
         private const int PAGE_SIZE = 10;
-        public AgenciesController(IAgenciesService AgenciesService, IConfiguration configuration)
+        public AgenciesController(IAgenciesService AgenciesService,  IConfiguration configuration)
         {
             _AgenciesService = AgenciesService;
             _configuration = configuration;
+           
+
         }
 
         private readonly List<string> allowedExtensions = new List<string>
@@ -40,11 +43,19 @@ namespace iReferAPI.Server.Controllers
         public IActionResult Get(int page)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var SysAdminRolerole = User.IsInRole("SysAdmin");
             int totalAgencies = 0;
             if (page == 0)
                 page = 1;
-            var Agencies = _AgenciesService.GetAllAgenciesAsync(PAGE_SIZE, page, userId, out totalAgencies);
-
+            IEnumerable<Agency> Agencies;
+            if (SysAdminRolerole)
+            {
+                Agencies = _AgenciesService.GetAllAgenciesAsync(PAGE_SIZE, page,  out totalAgencies);
+            }
+            else
+            {
+                Agencies = _AgenciesService.GetAllAgenciesAsync(PAGE_SIZE, page, userId, out totalAgencies);
+            }
             int totalPages = 0;
             if (totalAgencies % PAGE_SIZE == 0)
                 totalPages = totalAgencies / PAGE_SIZE;
@@ -155,6 +166,7 @@ namespace iReferAPI.Server.Controllers
 
             if (addedAgency != null)
             {
+                
                 if (fullPath != null)
                 {
                     using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
@@ -182,6 +194,43 @@ namespace iReferAPI.Server.Controllers
         #endregion
 
         #region Put 
+        [HttpPut("AddEmployeetoRole")]
+        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
+        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+        [Authorize(Roles = "AgencyAdmin")]
+        [Authorize(Roles = "SysAdmin")]
+        public async Task<IActionResult> AddEmployeetoRole([FromBody]RoleEditRequest model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (User.IsInRole("AgencyAdmin"))
+                {
+
+                    var result = await _AgenciesService.AddEmployeetoRole(model, userId);
+                    if (result.IsSuccess)
+                        return Ok(result);
+                    // Status Code: 200 
+
+                    return BadRequest(result);
+
+                }
+                
+
+                
+
+
+
+               
+            }
+
+            return BadRequest(new UserManagerResponse
+            {
+                Message = "Some properties are not valid",
+                IsSuccess = false
+            }); // Status code: 400
+        }
         [ProducesResponseType(200, Type = typeof(OperationResponse<Agency>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Agency>))]
         [HttpPut]

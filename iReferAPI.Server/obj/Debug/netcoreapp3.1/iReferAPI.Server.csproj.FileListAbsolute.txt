@@ -163,9 +163,6 @@ C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\bin\Debug\netc
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\bin\Debug\netcoreapp3.1\iReferAPI.Models.dll
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\bin\Debug\netcoreapp3.1\iReferAPI.Models.pdb
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.csprojAssemblyReference.cache
-C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.csproj.CoreCompileInputs.cache
-C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.RazorAssemblyInfo.cache
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.RazorAssemblyInfo.cs
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.AssemblyInfoInputs.cache
@@ -196,3 +193,7 @@ C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netc
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.dll
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.pdb
 C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.genruntimeconfig.cache
+C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\bin\Debug\netcoreapp3.1\SendGrid.dll
+C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.csproj.CoreCompileInputs.cache
+C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.MvcApplicationPartsAssemblyInfo.cache

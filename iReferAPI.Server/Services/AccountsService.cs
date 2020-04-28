@@ -87,14 +87,14 @@ namespace iReferAPI.Server.Services
 
         public IEnumerable<Account> GetAgencyAccounts(string agencyid, string userId)
         {
-            var Accounts = _db.Accounts.Where(i => i.AgencyId == agencyid && !i.IsDeleted && i.UserId == userId).ToArray();
+            var Accounts = _db.Accounts.Where(i => i.AgencyId == agencyid && !i.IsDeleted).ToArray();
 
             return Accounts;
         }
 
         public IEnumerable<Account> GetAllAccounts(string userId)
         {
-            var Accounts = _db.Accounts.Where(i => !i.IsDeleted && i.UserId == userId).ToArray();
+            var Accounts = _db.Accounts.Where(i => !i.IsDeleted).ToArray();
 
             return Accounts;
         }

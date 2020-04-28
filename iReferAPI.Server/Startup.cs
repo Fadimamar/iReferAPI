@@ -47,7 +47,7 @@ namespace iReferAPI.Server
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequiredLength = 5;
-            }).AddEntityFrameworkStores<ApplicationDbContext>()
+            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(auth =>
@@ -69,10 +69,10 @@ namespace iReferAPI.Server
             });
 
             services.AddScoped<IUserService, UserService>();
-           
+            services.AddTransient<IMailService, SendGridMailService>();
             services.AddTransient<IAgenciesService, AgenciesService>();
             services.AddTransient<IAccountsService, AccountsService>();
-
+            services.AddTransient<IRewardsService, RewardsService>();
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "iReferAPI By Westline Software L.L.C.", Description = "iReferAPI is an for learners to learn how to build client applications using Xamarin.Forms, Blazor Webassembly and other .NET client side technologies", Version = "v1.0" });
@@ -108,6 +108,8 @@ namespace iReferAPI.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseAuthentication();
+                app.UseAuthorization();
             }
             else
             {
@@ -119,7 +121,8 @@ namespace iReferAPI.Server
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

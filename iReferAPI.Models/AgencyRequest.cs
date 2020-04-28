@@ -7,6 +7,7 @@ using System.Text;
 
 namespace iReferAPI.Models
 {
+    public enum UserTypes { SysAdmin, AgencyAdmin = 2, AgencyUser = 3 }
     public class AgencyRequest
     {
 
@@ -46,5 +47,16 @@ namespace iReferAPI.Models
         public string ReferralCode { get; set; }
 
         public string AgencyId { get; set; }
+    }
+    public class RoleEditRequest
+    {
+        [Required]
+        public string EmployeeUserID { get; set; }
+
+        [Required]
+        public string AgencyID { get; set; }
+        public UserTypes UserType { get; set; }
+
+
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace iReferAPI.Models
 {
     public class Agency : Record
@@ -11,6 +13,8 @@ namespace iReferAPI.Models
         public Agency()
         {
             Accounts = new List<Account>();
+            AgencyRoles = new List<AgencyRole>();
+
         }
 
         [Required]
@@ -39,6 +43,7 @@ namespace iReferAPI.Models
         public string Logo { get; set; }
 
         public ICollection<Account> Accounts { get; set; }
-
+        public ICollection<AgencyRole> AgencyRoles { get; set; }
     }
+   
 }

@@ -6,13 +6,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Identity;
+using iReferAPI.Server.Models;
 namespace iReferAPI.Server.Services
 {
     public interface IAgenciesService
     {
-
+     
         IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber, string userId, out int totalAgencies);
+        IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber,  out int totalAgencies);
         IEnumerable<Agency> SearchAgenciesAsync(string query, int pageSize, int pageNumber, string userId, out int totalAgencies);
         Task<Agency> AddAgencyAsync(string agencyname, string address1, string address2, string
             website, string phonenumber, string state, string zipcode, string city, string phoneno, String logo, string userId);
@@ -21,17 +23,83 @@ namespace iReferAPI.Server.Services
         Task<Agency> DeleteAgencyAsync(string id, string userId);
         Task<Agency> GetAgencyById(string id, string userId);
         Agency GetAgencyByName(string name, string userId);
+        Task<UserManagerResponse> AddEmployeetoRole(RoleEditRequest model, string userId);
     }
 
     public class AgenciesService : IAgenciesService
     {
 
         private readonly ApplicationDbContext _db;
-        public AgenciesService(ApplicationDbContext db)
+        private UserManager<ApplicationUser> _userManger;
+        public AgenciesService(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManger = userManager;
         }
+        public async Task<UserManagerResponse> AddEmployeetoRole(RoleEditRequest model, string userId)
 
+        {
+            if (model == null)
+                throw new NullReferenceException("Reigster Model is null");
+
+
+            String Role;
+            switch (model.UserType)
+            {
+                case UserTypes.AgencyAdmin:
+                    Role = "AgencyAdmin";
+                    break;
+                default:
+                    Role = "AgencyUser";
+                    break;
+            }
+
+
+
+            var agency = await _db.Agencies.FindAsync(model.AgencyID);
+            if (agency != null)
+            {
+                var employee = await _userManger.FindByIdAsync(model.EmployeeUserID);
+                if (employee != null)
+                {
+                    var result = await _userManger.AddToRoleAsync(employee, Role);
+                    var item = new AgencyRole { AgencyId = model.AgencyID, UserRoleID = (int)model.UserType, EmployeeUserID = employee.Id, UserId= userId };
+
+                    var res = await _db.AgencyRoles.AddAsync(item);
+                    await _db.SaveChangesAsync();
+                    return new UserManagerResponse
+                    {
+                        Message = "Role Added successfully for the supplied userid under the supplied Agency ID!",
+                        IsSuccess = true,
+                    };
+
+
+
+
+                }
+                else
+                {
+                    return new UserManagerResponse
+                    {
+                        Message = "User Does not exists!",
+                        IsSuccess = false,
+                    };
+                }
+            }
+            else
+            {
+                return new UserManagerResponse
+                {
+                    Message = "Agency Does not exists",
+                    IsSuccess = false,
+                };
+            }
+
+
+
+
+
+        }
         public async Task<Agency> AddAgencyAsync(string agencyname, string address1, string address2, string
             website, string phonenumber, string state, string zipcode, string city, string phoneno, String logo, string userId)
         {
@@ -50,7 +118,15 @@ namespace iReferAPI.Server.Services
 
             await _db.Agencies.AddAsync(Agency);
             await _db.SaveChangesAsync();
+            var employee = await _userManger.FindByIdAsync(userId);
+            if (employee != null)
+            {
+                await _userManger.AddToRoleAsync(employee, "AgencyAdmin");
+                var item = new AgencyRole { AgencyId = Agency.Id, UserRoleID = (int)UserTypes.AgencyAdmin, EmployeeUserID = userId };
 
+                var res = await _db.AgencyRoles.AddAsync(item);
+                await _db.SaveChangesAsync();
+            }
             return Agency;
         }
 
@@ -93,6 +169,9 @@ namespace iReferAPI.Server.Services
         public IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber, string userId, out int totalAgencies)
         {
             // total Agencys 
+            
+            
+            
             var AllAgencies = _db.Agencies.Where(p => !p.IsDeleted && p.UserId == userId);
 
             totalAgencies = AllAgencies.Count();
@@ -119,6 +198,8 @@ namespace iReferAPI.Server.Services
 
         public Agency GetAgencyByName(string name, string userId)
         {
+                     
+            
             var Agency = _db.Agencies.SingleOrDefault(p => p.AgencyName == name && p.UserId == userId);
             if (Agency.UserId != userId || Agency.IsDeleted)
                 return null;
@@ -143,6 +224,20 @@ namespace iReferAPI.Server.Services
             return Agencys;
         }
 
+        public IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber, out int totalAgencies)
+        {
 
+            var AllAgencies = _db.Agencies.Where(p => !p.IsDeleted);
+
+            totalAgencies = AllAgencies.Count();
+
+            var Agencys = AllAgencies.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
+            foreach (var item in Agencys)
+            {
+                item.Accounts = _db.Accounts.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
+            }
+
+            return Agencys;
+        }
     }
 }

@@ -253,22 +253,19 @@ namespace iReferAPI.Server.Data.Migrations
                     b.ToTable("Agencies");
                 });
 
-            modelBuilder.Entity("iReferAPI.Models.Plan", b =>
+            modelBuilder.Entity("iReferAPI.Models.AgencyEmployee", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CoverPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                    b.Property<string>("AgencyId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                    b.Property<string>("EmployeeUserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -276,51 +273,71 @@ namespace iReferAPI.Server.Data.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
 
+                    b.Property<int>("UserRoleID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Plans");
+                    b.HasIndex("AgencyId");
+
+                    b.ToTable("AgencyEmplyees");
                 });
 
-            modelBuilder.Entity("iReferAPI.Models.ToDoItem", b =>
+            modelBuilder.Entity("iReferAPI.Models.Reward", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("AchievedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("AgencyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("CashAmount")
+                        .HasColumnType("money");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
-                    b.Property<DateTime?>("EstimatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<float>("DiscountRate")
+                        .HasColumnType("real");
+
+                    b.Property<decimal?>("EquivalentDollarAmount")
+                        .HasColumnType("money");
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PlanId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<bool>("NoExpiration")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PointsAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RewardReviewDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RewardType")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -329,9 +346,9 @@ namespace iReferAPI.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlanId");
+                    b.HasIndex("AgencyId");
 
-                    b.ToTable("ToDoAccounts");
+                    b.ToTable("Rewards");
                 });
 
             modelBuilder.Entity("iReferAPI.Server.Models.ApplicationUser", b =>
@@ -467,11 +484,18 @@ namespace iReferAPI.Server.Data.Migrations
                         .HasForeignKey("AgencyId");
                 });
 
-            modelBuilder.Entity("iReferAPI.Models.ToDoItem", b =>
+            modelBuilder.Entity("iReferAPI.Models.AgencyEmployee", b =>
                 {
-                    b.HasOne("iReferAPI.Models.Plan", "Plan")
-                        .WithMany("ToDoAccounts")
-                        .HasForeignKey("PlanId");
+                    b.HasOne("iReferAPI.Models.Agency", "Agency")
+                        .WithMany("AgencyEmployees")
+                        .HasForeignKey("AgencyId");
+                });
+
+            modelBuilder.Entity("iReferAPI.Models.Reward", b =>
+                {
+                    b.HasOne("iReferAPI.Models.Agency", "Agency")
+                        .WithMany()
+                        .HasForeignKey("AgencyId");
                 });
 #pragma warning restore 612, 618
         }

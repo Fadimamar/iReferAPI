@@ -10,32 +10,48 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using iReferAPI.Server.Data;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace iReferAPI.Server.Services
 {
+    
+
     public interface IUserService
     {
 
         Task<UserManagerResponse> RegisterUserAsync(RegisterRequest model);
 
+      
         Task<UserManagerResponse> LoginUserAsync(LoginRequest model);
+        Task<UserManagerResponse> ConfirmEmailAsync(string UserId, string token );
     }
 
     public class UserService : IUserService
     {
+        private readonly ApplicationDbContext _db;
 
+       
         private UserManager<ApplicationUser> _userManger;
         private IConfiguration _configuration;
-        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        private IMailService _mailService;
+        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext db,   IMailService mailservice)
         {
             _userManger = userManager;
             _configuration = configuration;
+            _db = db;
+            _mailService = mailservice;
+
         }
+
+      
+
 
         public async Task<UserManagerResponse> RegisterUserAsync(RegisterRequest model)
         {
             if (model == null)
                 throw new NullReferenceException("Reigster Model is null");
+           
 
             if (model.Password != model.ConfirmPassword)
                 return new UserManagerResponse
@@ -52,16 +68,31 @@ namespace iReferAPI.Server.Services
                 LastName = model.LastName
             };
 
+
+
             var result = await _userManger.CreateAsync(identityUser, model.Password);
+
 
             if (result.Succeeded)
             {
+                var confirmEmailToken = await _userManger.GenerateEmailConfirmationTokenAsync(identityUser);
 
+                //string Role = "Customer";
+
+                var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
+                var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
+                string url = $"{_configuration["AppUrl"]}/api/auth/confirmemail?userid={identityUser.Id}&token={validEmailToken}";
+                await _mailService.SendEmailAsync(identityUser.Email, "Confirm you email", "<h1> Welcome to iRefer</h1>" +
+                    $"<p> Please confirm your email by <a href='{url}'> clicking Here</p>");
+                ////var result2 = await _userManger.AddToRoleAsync(identityUser, Role);
+                //if (result2.Succeeded)
+                //{ 
                 return new UserManagerResponse
                 {
                     Message = "User created successfully!",
                     IsSuccess = true,
                 };
+                //}
             }
 
             return new UserManagerResponse
@@ -72,6 +103,10 @@ namespace iReferAPI.Server.Services
             };
 
         }
+
+      
+
+
 
         public async Task<UserManagerResponse> LoginUserAsync(LoginRequest model)
         {
@@ -123,5 +158,25 @@ namespace iReferAPI.Server.Services
             };
         }
 
+        public async Task<UserManagerResponse> ConfirmEmailAsync(string UserId, string token)
+        {
+            var user =await _userManger.FindByIdAsync(UserId);
+            if (user == null)
+                return new UserManagerResponse { IsSuccess = false, Message = "User not found" };
+            var decodedToken = WebEncoders.Base64UrlDecode(token);
+            var normalToken= Encoding.UTF8.GetString(decodedToken);
+            var result = await _userManger.ConfirmEmailAsync(user, normalToken);
+            if (result.Succeeded)
+                return new UserManagerResponse
+                { Message = "Email Confirmed successfully!",
+                    IsSuccess = true 
+                };
+            return new UserManagerResponse
+            {
+                Message = "Email was not Confirmed!",
+                IsSuccess = false,
+                Errors=result.Errors.Select(e=>e.Description)
+            };
+        }
     }
 }

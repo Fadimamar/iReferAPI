@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6g9xwIJOoufKQV3lATZxguonLOQC+MpeRSXXz8PPDnPN6RxXfxLmMQ3SszcRfNaZySYOFEy9q8eSIpWt4i1ueg==",
+  "dgSpecHash": "7fk1Hm5p7GPEaFEWrTjY7rH3CTdBuuNHSdOaZu9Fyu75e9FC4XQg526XQPIPsicPkxspCWwc3cpiXk4X80IIMw==",
   "success": true,
   "projectFilePath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj",
   "expectedPackageFiles": [
@@ -103,6 +103,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\fmamar\\.nuget\\packages\\sendgrid\\9.14.0\\sendgrid.9.14.0.nupkg.sha512",
     "C:\\Users\\fmamar\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.2\\sqlitepclraw.bundle_e_sqlite3.2.0.2.nupkg.sha512",
     "C:\\Users\\fmamar\\.nuget\\packages\\sqlitepclraw.core\\2.0.2\\sqlitepclraw.core.2.0.2.nupkg.sha512",
     "C:\\Users\\fmamar\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.2\\sqlitepclraw.lib.e_sqlite3.2.0.2.nupkg.sha512",
