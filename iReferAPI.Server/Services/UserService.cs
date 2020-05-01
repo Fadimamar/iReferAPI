@@ -25,6 +25,8 @@ namespace iReferAPI.Server.Services
       
         Task<UserManagerResponse> LoginUserAsync(LoginRequest model);
         Task<UserManagerResponse> ConfirmEmailAsync(string UserId, string token );
+        Task<UserManagerResponse> ForgotPasswordAsync(string email);
+        Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordRequest model);
     }
 
     public class UserService : IUserService
@@ -176,6 +178,64 @@ namespace iReferAPI.Server.Services
                 Message = "Email was not Confirmed!",
                 IsSuccess = false,
                 Errors=result.Errors.Select(e=>e.Description)
+            };
+        }
+
+        public async Task<UserManagerResponse> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManger.FindByEmailAsync(email);
+
+            if (user == null)
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "No user is associated with this email",
+                };
+            var token = await _userManger.GeneratePasswordResetTokenAsync(user);
+            var encodedRestToken = Encoding.UTF8.GetBytes(token);
+            var validRestToken = WebEncoders.Base64UrlEncode(encodedRestToken);
+            string url = $"{_configuration["AppUrl"]}/api/auth/ResetPassword?email={email}&token={validRestToken}";
+            await _mailService.SendEmailAsync(email, "Reset Password", "<h1> Instructions</h1>" +
+                   $"<p> To reset your password please <a href='{url}'> click Here</a></p>");
+
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Rest password URL has been sent by email succesflly!"
+            };
+        }
+
+        public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordRequest model)
+        {
+            var user = await _userManger.FindByEmailAsync(model.Email);
+            if (user == null)
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "No User is accosiated with this email"
+
+                };
+
+            if (model.Password != model.ConfirmPassword)
+                return new UserManagerResponse
+                {
+                    Message = "Confirm password doesn't match the password",
+                    IsSuccess = false,
+                };
+            var result = await _userManger.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "Password was chnaged successfly!"
+
+                };
+
+            return new UserManagerResponse
+            {
+                Message = "Email was not Confirmed!",
+                IsSuccess = false,
+                Errors = result.Errors.Select(e => e.Description)
             };
         }
     }

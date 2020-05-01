@@ -100,5 +100,39 @@ namespace iReferAPI.Server.Controllers
             }
             return BadRequest(result); // Status code: 400
         }
+        [HttpPost("ForgotPassword")]
+        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
+        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var result = await _userService.ForgotPasswordAsync(email);
+
+
+
+            if (result.IsSuccess)
+            {
+                // return Redirect($"{_configuration["AppUrl"]}/ConfirmEmail.html");
+                return Ok(result);
+
+            }
+            return BadRequest(result); // Status code: 400
+        }
+        [HttpPost("ResetPassword")]
+        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
+        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+        public async Task<IActionResult> ForgotPassword(ResetPasswordRequest model)
+        {
+            var result = await _userService.ResetPasswordAsync(model);
+
+
+
+            if (result.IsSuccess)
+            {
+                // return Redirect($"{_configuration["AppUrl"]}/ConfirmEmail.html");
+                return Ok(result);
+
+            }
+            return BadRequest(result); // Status code: 400
+        }
     }
 }
