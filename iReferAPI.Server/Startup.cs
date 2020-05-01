@@ -73,6 +73,7 @@ namespace iReferAPI.Server
             services.AddTransient<IAgenciesService, AgenciesService>();
             services.AddTransient<IAccountsService, AccountsService>();
             services.AddTransient<IRewardsService, RewardsService>();
+            services.AddRazorPages();
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "iReferAPI By Westline Software L.L.C.", Description = "iReferAPI is an for learners to learn how to build client applications using Xamarin.Forms, Blazor Webassembly and other .NET client side technologies", Version = "v1.0" });

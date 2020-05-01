@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8MrAYVZmfaUNl535pciGAtmF7rWPy4uBDgQkVkBMVB/g/OgfqQy3HAAf7YiH2aunvC64p73DcoYuUpgLAt2fdQ==",
+  "dgSpecHash": "4gNdf9o8K6qFD/48fyY0dOJ7W7SrcfUuPK05bINxUtU+M61i6j6dMwOacCJF3gLOU15Tsv9Zeb1SW3sgNcKslw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj",
+  "projectFilePath": "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fmamar\\.nuget\\packages\\microsoft.aspnetcore.http\\2.2.2\\microsoft.aspnetcore.http.2.2.2.nupkg.sha512",
     "C:\\Users\\fmamar\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",

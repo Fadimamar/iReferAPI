@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj": {}
+    "C:\\Workspaces\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj": {
+    "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj",
+        "projectUniqueName": "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj",
         "projectName": "iReferAPI.Models",
-        "projectPath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj",
+        "projectPath": "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj",
         "packagesPath": "C:\\Users\\fmamar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\obj\\",
+        "outputPath": "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -81,14 +81,14 @@
         }
       }
     },
-    "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj": {
+    "C:\\Workspaces\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj",
+        "projectUniqueName": "C:\\Workspaces\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj",
         "projectName": "iReferAPI.Server",
-        "projectPath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj",
+        "projectPath": "C:\\Workspaces\\iReferAPI\\iReferAPI.Server\\iReferAPI.Server.csproj",
         "packagesPath": "C:\\Users\\fmamar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Server\\obj\\",
+        "outputPath": "C:\\Workspaces\\iReferAPI\\iReferAPI.Server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -110,8 +110,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj": {
-                "projectPath": "C:\\Users\\fmamar\\Source\\Repos\\Fadimamar\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj"
+              "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj": {
+                "projectPath": "C:\\Workspaces\\iReferAPI\\iReferAPI.Models\\iReferAPI.Models.csproj"
               }
             }
           }
@@ -169,7 +169,7 @@
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[3.1.2, )"
             },
             "SendGrid": {
               "target": "Package",
