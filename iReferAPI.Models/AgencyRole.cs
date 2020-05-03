@@ -15,5 +15,8 @@ namespace iReferAPI.Models
         public string AgencyId { get; set; }
         [ForeignKey("Role")]
         public int UserRoleID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string email { get; set; }
     }
 }

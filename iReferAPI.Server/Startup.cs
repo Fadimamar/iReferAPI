@@ -41,7 +41,7 @@ namespace iReferAPI.Server
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            
+
             services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -49,7 +49,12 @@ namespace iReferAPI.Server
                 options.Password.RequiredLength = 5;
             }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            //    services.AddIdentity<ApplicationUser, IdentityRole>()
+            //.AddRoleManager<RoleManager<IdentityRole>>()
+            //.AddDefaultUI()
+            //.AddDefaultTokenProviders()
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
+           
             services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,7 +69,8 @@ namespace iReferAPI.Server
                     ValidIssuer = Configuration["AuthSettings:Issuer"],
                     RequireExpirationTime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AuthSettings:Key"])),
-                    ValidateIssuerSigningKey = true
+                    ValidateIssuerSigningKey = true,
+                    RoleClaimType="role"
                 };
             });
 
@@ -73,6 +79,7 @@ namespace iReferAPI.Server
             services.AddTransient<IAgenciesService, AgenciesService>();
             services.AddTransient<IAccountsService, AccountsService>();
             services.AddTransient<IRewardsService, RewardsService>();
+            services.AddTransient<IAgenciesRolesService, AgenciesRolesService>();
             services.AddRazorPages();
             services.AddSwaggerGen(options =>
             {

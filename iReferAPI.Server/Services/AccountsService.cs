@@ -37,8 +37,8 @@ namespace iReferAPI.Server.Services
         public async Task<Account> CreateAccountAsync(string agencyId, string referralUrl, string referralcode, string userId)
         {
             // Check the plan if existing 
-            var plan = await _db.Agencies.FindAsync(agencyId);
-            if (plan == null)
+            var agency = await _db.Agencies.FindAsync(agencyId);
+            if (agency == null)
                 return null;
 
             var item = new Account

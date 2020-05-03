@@ -396,3 +396,4 @@ C:\Workspaces\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\staticwebassets
 C:\Workspaces\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.dll
 C:\Workspaces\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.pdb
 C:\Workspaces\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\iReferAPI.Server.genruntimeconfig.cache
+C:\Workspaces\iReferAPI\iReferAPI.Server\obj\Debug\netcoreapp3.1\Razor\Pages\ResetPassword.cshtml.g.cs

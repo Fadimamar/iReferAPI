@@ -131,15 +131,21 @@ namespace iReferAPI.Server.Services
                     Message = "Invalid password",
                     IsSuccess = false,
                 };
-
+            var roles = await _userManger.GetRolesAsync(user);
+            
             var claims = new[]
             {
                 new Claim("Email", model.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("FirstName", user.FirstName),
-                new Claim("LastName", user.LastName)
+                new Claim("LastName", user.LastName),
+                new Claim(ClaimTypes.Role,roles[0])
             };
-
+            //foreach (string role in roles)
+            //    { 
+            //    i
+            //    claims[claims.Length+1]
+            //}
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
 
             var token = new JwtSecurityToken(
@@ -194,19 +200,26 @@ namespace iReferAPI.Server.Services
             var token = await _userManger.GeneratePasswordResetTokenAsync(user);
             var encodedRestToken = Encoding.UTF8.GetBytes(token);
             var validRestToken = WebEncoders.Base64UrlEncode(encodedRestToken);
-            string url = $"{_configuration["AppUrl"]}/api/auth/ResetPassword?email={email}&token={validRestToken}";
-            await _mailService.SendEmailAsync(email, "Reset Password", "<h1> Instructions</h1>" +
+            string url = $"{_configuration["AppUrl"]}/resetPassword?email={email}&token={validRestToken}";
+            var res = await _mailService.SendEmailAsync(email, "Reset Password", "<h1> Instructions</h1>" +
                    $"<p> To reset your password please <a href='{url}'> click Here</a></p>");
-
+            if (res.StatusCode == System.Net.HttpStatusCode.Accepted || res.StatusCode == System.Net.HttpStatusCode.OK)
+                return new UserManagerResponse
+                { 
+                    IsSuccess = true,
+                    Message = "Rest password URL has been sent by email succesflly!"
+                };
             return new UserManagerResponse
             {
-                IsSuccess = true,
-                Message = "Rest password URL has been sent by email succesflly!"
+                IsSuccess = false,
+                Message = "Couldnt send Reset Email"
             };
         }
 
         public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordRequest model)
         {
+            var decodedToken = WebEncoders.Base64UrlDecode(model.Token);
+            var normalToken = Encoding.UTF8.GetString(decodedToken);
             var user = await _userManger.FindByEmailAsync(model.Email);
             if (user == null)
                 return new UserManagerResponse
@@ -216,24 +229,25 @@ namespace iReferAPI.Server.Services
 
                 };
 
-            if (model.Password != model.ConfirmPassword)
+            if (model.NewPassword != model.ConfirmPassword)
                 return new UserManagerResponse
                 {
                     Message = "Confirm password doesn't match the password",
                     IsSuccess = false,
                 };
-            var result = await _userManger.ResetPasswordAsync(user, model.Token, model.Password);
+            
+            var result = await _userManger.ResetPasswordAsync(user, normalToken, model.NewPassword);
             if (result.Succeeded)
                 return new UserManagerResponse
                 {
                     IsSuccess = true,
-                    Message = "Password was chnaged successfly!"
+                    Message = "Password was changed successfuly!"
 
                 };
 
             return new UserManagerResponse
             {
-                Message = "Email was not Confirmed!",
+                Message = "Password Reset failed!",
                 IsSuccess = false,
                 Errors = result.Errors.Select(e => e.Description)
             };

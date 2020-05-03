@@ -21,15 +21,15 @@ namespace iReferAPI.Server.Controllers
 
         private readonly IAgenciesService _AgenciesService;
         private readonly IConfiguration _configuration;
-      
+       
 
         private const int PAGE_SIZE = 10;
         public AgenciesController(IAgenciesService AgenciesService,  IConfiguration configuration)
         {
             _AgenciesService = AgenciesService;
             _configuration = configuration;
-           
 
+           
         }
 
         private readonly List<string> allowedExtensions = new List<string>
@@ -162,7 +162,7 @@ namespace iReferAPI.Server.Controllers
                 url = $"{_configuration["AppUrl"]}{newFileName}";
             }
 
-            var addedAgency = await _AgenciesService.AddAgencyAsync(model.AgencyName, model.Address1, model.Address2, model.Website, model.PhoneNo, model.State, model.ZipCode, model.City, model.PhoneNo, url, userId);
+            var addedAgency = await _AgenciesService.AddAgencyAsync(model.AgencyName, model.Address1, model.Address2, model.Website, model.PhoneNo, model.State, model.ZipCode, model.City, model.PhoneNo,url, userId);
 
             if (addedAgency != null)
             {
@@ -194,43 +194,75 @@ namespace iReferAPI.Server.Controllers
         #endregion
 
         #region Put 
-        [HttpPut("AddEmployeetoRole")]
-        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
-        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
-        [Authorize(Roles = "AgencyAdmin")]
-        [Authorize(Roles = "SysAdmin")]
-        public async Task<IActionResult> AddEmployeetoRole([FromBody]RoleEditRequest model)
-        {
+        //[HttpPut("AddAgencyRole")]
+        //[ProducesResponseType(200, Type = typeof(UserManagerResponse))]
+        //[ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+        //[Authorize(Roles = "AgencyAdmin")]
+        //[Authorize(Roles = "SysAdmin")]
+        //public async Task<IActionResult> AddAgencyRoleAsync([FromBody]AgencyRoleRequest model)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                if (User.IsInRole("AgencyAdmin"))
-                {
+        //    if (ModelState.IsValid)
+        //    {
+        //        string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //        if (User.IsInRole("AgencyAdmin") || User.IsInRole("SystemAdmin"))
+        //        {
+                    
+        //            var result = await _agencyRolesService.AddAgencyRoleAsync(model, userId);
+        //            if (result.IsSuccess)
+        //                return Ok(result);
+        //            // Status Code: 200 
 
-                    var result = await _AgenciesService.AddEmployeetoRole(model, userId);
-                    if (result.IsSuccess)
-                        return Ok(result);
-                    // Status Code: 200 
+        //            return BadRequest(result);
 
-                    return BadRequest(result);
-
-                }
+        //        }
                 
-
-                
-
-
-
                
-            }
+        //    }
 
-            return BadRequest(new UserManagerResponse
-            {
-                Message = "Some properties are not valid",
-                IsSuccess = false
-            }); // Status code: 400
-        }
+        //    return BadRequest(new UserManagerResponse
+        //    {
+        //        Message = "Some properties are not valid",
+        //        IsSuccess = false
+        //    }); // Status code: 400
+        //}
+        //[HttpPut("AgencyRole")]
+        //[ProducesResponseType(200, Type = typeof(UserManagerResponse))]
+        //[ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+        //[Authorize(Roles = "AgencyAdmin")]
+        //[Authorize(Roles = "SysAdmin")]
+        //public async Task<IActionResult> AddAgencyRoleAsync([FromBody]AgencyRoleRequest model)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //        if (User.IsInRole("AgencyAdmin") || User.IsInRole("SystemAdmin"))
+        //        {
+
+        //            var result = await _agencyRolesService.AddAgencyRoleAsync(model, userId);
+        //            if (result.IsSuccess)
+        //                return Ok(result);
+        //            // Status Code: 200 
+
+        //            return BadRequest(result);
+
+        //        }
+
+
+
+
+
+
+
+        //    }
+
+        //    return BadRequest(new UserManagerResponse
+        //    {
+        //        Message = "Some properties are not valid",
+        //        IsSuccess = false
+        //    }); // Status code: 400
+        //}
         [ProducesResponseType(200, Type = typeof(OperationResponse<Agency>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Agency>))]
         [HttpPut]
@@ -301,7 +333,7 @@ namespace iReferAPI.Server.Controllers
         [ProducesResponseType(200, Type = typeof(OperationResponse<Agency>))]
         [ProducesResponseType(404)]
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteAgencyRole(string id)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -322,8 +354,10 @@ namespace iReferAPI.Server.Controllers
                 Record = deletedAgency
             });
         }
+     
         #endregion 
 
 
     }
+
 }

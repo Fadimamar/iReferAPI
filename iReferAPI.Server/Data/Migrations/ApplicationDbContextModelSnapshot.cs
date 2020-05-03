@@ -253,7 +253,7 @@ namespace iReferAPI.Server.Data.Migrations
                     b.ToTable("Agencies");
                 });
 
-            modelBuilder.Entity("iReferAPI.Models.AgencyEmployee", b =>
+            modelBuilder.Entity("iReferAPI.Models.AgencyRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -267,8 +267,14 @@ namespace iReferAPI.Server.Data.Migrations
                     b.Property<string>("EmployeeUserID")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -281,11 +287,14 @@ namespace iReferAPI.Server.Data.Migrations
                     b.Property<int>("UserRoleID")
                         .HasColumnType("int");
 
+                    b.Property<string>("email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("AgencyEmplyees");
+                    b.ToTable("AgencyRoles");
                 });
 
             modelBuilder.Entity("iReferAPI.Models.Reward", b =>
@@ -484,10 +493,10 @@ namespace iReferAPI.Server.Data.Migrations
                         .HasForeignKey("AgencyId");
                 });
 
-            modelBuilder.Entity("iReferAPI.Models.AgencyEmployee", b =>
+            modelBuilder.Entity("iReferAPI.Models.AgencyRole", b =>
                 {
                     b.HasOne("iReferAPI.Models.Agency", "Agency")
-                        .WithMany("AgencyEmployees")
+                        .WithMany("AgencyRoles")
                         .HasForeignKey("AgencyId");
                 });
 

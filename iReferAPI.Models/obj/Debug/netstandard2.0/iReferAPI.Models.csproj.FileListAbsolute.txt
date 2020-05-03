@@ -28,9 +28,9 @@ C:\Users\fmamar\Source\Repos\Fadimamar\iReferAPI\iReferAPI.Models\obj\Debug\nets
 C:\Workspaces\iReferAPI\iReferAPI.Models\bin\Debug\netstandard2.0\iReferAPI.Models.deps.json
 C:\Workspaces\iReferAPI\iReferAPI.Models\bin\Debug\netstandard2.0\iReferAPI.Models.dll
 C:\Workspaces\iReferAPI\iReferAPI.Models\bin\Debug\netstandard2.0\iReferAPI.Models.pdb
-C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.csprojAssemblyReference.cache
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.csproj.CoreCompileInputs.cache
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.AssemblyInfoInputs.cache
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.AssemblyInfo.cs
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.dll
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.pdb
+C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.csprojAssemblyReference.cache

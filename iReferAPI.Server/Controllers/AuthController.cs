@@ -81,8 +81,7 @@ namespace iReferAPI.Server.Controllers
 
         // /api/auth/confirmemail?userid=xxx&token=xxx
         [HttpPost("confirmEmail")]
-        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
-        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+       
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
@@ -101,8 +100,7 @@ namespace iReferAPI.Server.Controllers
             return BadRequest(result); // Status code: 400
         }
         [HttpPost("ForgotPassword")]
-        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
-        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
+       
         public async Task<IActionResult> ForgotPassword(string email)
         {
             var result = await _userService.ForgotPasswordAsync(email);
@@ -118,21 +116,24 @@ namespace iReferAPI.Server.Controllers
             return BadRequest(result); // Status code: 400
         }
         [HttpPost("ResetPassword")]
-        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
-        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
-        public async Task<IActionResult> ForgotPassword(ResetPasswordRequest model)
+       
+        public async Task<IActionResult> ResetPassword([FromForm]ResetPasswordRequest model)
         {
-            var result = await _userService.ResetPasswordAsync(model);
-
-
-
-            if (result.IsSuccess)
+            if (ModelState.IsValid)
             {
-                // return Redirect($"{_configuration["AppUrl"]}/ConfirmEmail.html");
-                return Ok(result);
+                var result = await _userService.ResetPasswordAsync(model);
 
+
+
+                if (result.IsSuccess)
+                {
+                   
+                    return Ok(result);
+
+                }
+                return BadRequest(result); // Status code: 400
             }
-            return BadRequest(result); // Status code: 400
+            return BadRequest("Some proprties are not Valid");
         }
     }
 }
