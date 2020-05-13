@@ -7,6 +7,8 @@ namespace iReferAPI.Models
     public enum UserTypes { SysAdmin, AgencyAdmin = 2, AgencyUser = 3 }
     public class AgencyRoleRequest
     {
+       
+        public string AgencyRoleID { get; set; }
         [Required]
         public string EmployeeUserID { get; set; }
 

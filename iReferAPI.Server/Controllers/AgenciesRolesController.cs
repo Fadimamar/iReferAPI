@@ -28,7 +28,7 @@ namespace iReferAPI.Server.Controllers
 
         #region GET
         //get all agency active accounts
-        [ProducesResponseType(200, Type = typeof(CollectionResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(CollectionResponse<AgencyRole>))]
         [HttpGet("agency={agencyId}")]
       // [Authorize(Roles = "AgencyAdmin,SysAdmin")]
         
@@ -46,14 +46,14 @@ namespace iReferAPI.Server.Controllers
                 {
                     Count = Roles.Count(),
                     IsSuccess = true,
-                    Message = "Accounts retrieved successfully!",
+                    Message = "Roles retrieved successfully!",
                     Records = Roles
                 });
             }
             return Unauthorized();
         }
         //get all active accounts
-        [ProducesResponseType(200, Type = typeof(CollectionResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(CollectionResponse<AgencyRole>))]
         [HttpGet()]
        // [Authorize(Roles = "SysAdmin")]
         public IActionResult Get()
@@ -71,7 +71,7 @@ namespace iReferAPI.Server.Controllers
                 {
                     Count = Roles.Count(),
                     IsSuccess = true,
-                    Message = "Accounts retrieved successfully!",
+                    Message = "Roles retrieved successfully!",
                     Records = Roles
                 });
             }
@@ -82,8 +82,8 @@ namespace iReferAPI.Server.Controllers
         #endregion
 
         #region POST
-        [ProducesResponseType(200, Type = typeof(OperationResponse<Account>))]
-        [ProducesResponseType(400, Type = typeof(OperationResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(OperationResponse<AgencyRole>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<AgencyRole>))]
         [HttpPost]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
 
@@ -101,7 +101,7 @@ namespace iReferAPI.Server.Controllers
                     return Ok(new OperationResponse<AgencyRole>
                     {
                         IsSuccess = true,
-                        Message = "Account has been inserted successfully",
+                        Message = "Agency Role has been created successfully",
                         Record = role
                     });
                 }
