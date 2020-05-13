@@ -17,7 +17,7 @@ namespace iReferAPI.Server.Controllers
     public class RewardsController : ControllerBase
     {
 
-        
+
 
         private readonly IRewardsService _rewardsService;
         public RewardsController(IRewardsService RewardsService)
@@ -27,11 +27,11 @@ namespace iReferAPI.Server.Controllers
         }
 
         #region GET
-        //get all agency active accounts
+        //get all agency active Roles
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
-        [HttpGet("agency={agencyId}")]
-      // [Authorize(Roles = "AgencyAdmin,SysAdmin")]
-        
+        [HttpGet("ActiveReward/AgencyId={agencyId}")]
+        // [Authorize(Roles = "AgencyAdmin,SysAdmin")]
+
         public IActionResult GetActiveReward(string agencyId)
         {
             if (agencyId == null)
@@ -44,7 +44,7 @@ namespace iReferAPI.Server.Controllers
                 var reward = _rewardsService.GetActiveReward(agencyId);
                 return Ok(new OperationResponse<Reward>
                 {
-                   
+
                     IsSuccess = true,
                     Message = "Reward retrieved successfully!",
                     Record = reward
@@ -52,19 +52,19 @@ namespace iReferAPI.Server.Controllers
             }
             return Unauthorized();
         }
-        //get all active accounts
+        //get all active Roles
         [ProducesResponseType(200, Type = typeof(CollectionResponse<Reward>))]
-        [HttpGet()]
+        [HttpGet("AllRewards/AgencyId={agencyId}")]
         // [Authorize(Roles = "SysAdmin")]
         public IActionResult GetAllRewards(string agencyId)
         {
-           
+
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             //  if (User.IsInRole("SysAdmin")) 
             var role = User.FindFirst(ClaimTypes.Role).Value;
-               if (role=="SysAdmin" )
+            if (role == "SysAdmin")
             {
                 var rewards = _rewardsService.GetAllAgencyRewards(agencyId);
                 return Ok(new CollectionResponse<Reward>
@@ -84,7 +84,7 @@ namespace iReferAPI.Server.Controllers
         #region POST
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Reward>))]
-        [HttpPost]
+        [HttpPost("ConfigureCustom")]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
 
         public async Task<IActionResult> AddCustomReward([FromBody]CustomRewardRequest model)
@@ -116,7 +116,7 @@ namespace iReferAPI.Server.Controllers
         }
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Reward>))]
-        [HttpPost]
+        [HttpPost("ConfigureCash")]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
 
         public async Task<IActionResult> AddCashReward([FromBody]CashRewardRequest model)
@@ -144,11 +144,11 @@ namespace iReferAPI.Server.Controllers
                     Message = "Some properties are not valid"
                 });
             }
-           return Unauthorized();
+            return Unauthorized();
         }
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Reward>))]
-        [HttpPost]
+        [HttpPost("ConfigurePoints")]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
         public async Task<IActionResult> AddPointsReward([FromBody]PointsRewardRequest model)
         {
@@ -179,7 +179,7 @@ namespace iReferAPI.Server.Controllers
         }
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Reward>))]
-        [HttpPost]
+        [HttpPost("ConfigureCoupon")]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
         public async Task<IActionResult> AddCouponReward([FromBody]CouponRewardRequest model)
         {
@@ -218,8 +218,8 @@ namespace iReferAPI.Server.Controllers
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
         [ProducesResponseType(404)]
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
-        
+        // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
+
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id))

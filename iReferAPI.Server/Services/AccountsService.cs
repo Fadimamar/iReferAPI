@@ -46,6 +46,7 @@ namespace iReferAPI.Server.Services
                 ReferralURL = referralUrl,
                 ReferralCode = referralcode,
                 AgencyId = agencyId,
+                CreatedDate = DateTime.UtcNow,
                 UserId = userId
             };
 
@@ -63,7 +64,7 @@ namespace iReferAPI.Server.Services
 
             item.IsDeleted = true;
             item.ModifiedDate = DateTime.UtcNow;
-
+            item.UserId = userId;
             await _db.SaveChangesAsync();
 
             return item;

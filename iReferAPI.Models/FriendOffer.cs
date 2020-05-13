@@ -22,8 +22,7 @@ namespace iReferAPI.Models
         [Required]
         public OfferTypes OfferType { get; set; }
       
-        public int RewardReviewDays { get; set; }
-       
+              
          [Required]
          [StringLength(500)]
          public string Message { get; set; }

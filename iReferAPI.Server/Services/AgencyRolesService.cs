@@ -106,6 +106,7 @@ namespace iReferAPI.Server.Services
 
             item.IsDeleted = true;
             item.ModifiedDate = DateTime.UtcNow;
+            
 
             await _db.SaveChangesAsync();
 

@@ -27,7 +27,7 @@ namespace iReferAPI.Server.Controllers
         }
 
         #region GET
-        //get all agency active accounts
+        //get all agency active Roles
         [ProducesResponseType(200, Type = typeof(CollectionResponse<AgencyRole>))]
         [HttpGet("agency={agencyId}")]
       // [Authorize(Roles = "AgencyAdmin,SysAdmin")]
@@ -52,9 +52,9 @@ namespace iReferAPI.Server.Controllers
             }
             return Unauthorized();
         }
-        //get all active accounts
+        //get all active Roles
         [ProducesResponseType(200, Type = typeof(CollectionResponse<AgencyRole>))]
-        [HttpGet()]
+        [HttpGet("AllAgencies")]
        // [Authorize(Roles = "SysAdmin")]
         public IActionResult Get()
         {
@@ -84,7 +84,7 @@ namespace iReferAPI.Server.Controllers
         #region POST
         [ProducesResponseType(200, Type = typeof(OperationResponse<AgencyRole>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<AgencyRole>))]
-        [HttpPost]
+        [HttpPost("AddRole")]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
 
         public async Task<IActionResult> Post([FromBody]AgencyRoleRequest model)
@@ -106,7 +106,7 @@ namespace iReferAPI.Server.Controllers
                     });
                 }
 
-                return BadRequest(new OperationResponse<Account>
+                return BadRequest(new OperationResponse<AgencyRole>
                 {
                     IsSuccess = true,
                     Message = "Some properties are not valid"

@@ -123,7 +123,7 @@ namespace iReferAPI.Server.Services
         if (employee != null)
         {
             await _userManger.AddToRoleAsync(employee, "AgencyAdmin");
-            var item = new AgencyRole { AgencyId = Agency.Id, UserRoleID = (int)UserTypes.AgencyAdmin, EmployeeUserID = userId };
+            var item = new AgencyRole { AgencyId = Agency.Id, UserRoleID = (int)UserTypes.AgencyAdmin, EmployeeUserID = userId, CreatedDate=DateTime.UtcNow };
 
             var res = await _db.AgencyRoles.AddAsync(item);
             await _db.SaveChangesAsync();
@@ -139,7 +139,7 @@ namespace iReferAPI.Server.Services
 
         Agency.IsDeleted = true;
         Agency.ModifiedDate = DateTime.UtcNow;
-
+            Agency.UserId = userId;
         await _db.SaveChangesAsync();
         return Agency;
     }
