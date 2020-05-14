@@ -84,7 +84,7 @@ namespace iReferAPI.Server
             services.AddRazorPages();
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "iReferAPI By Westline Software L.L.C.", Description = "iReferAPI is an for learners to learn how to build client applications using Xamarin.Forms, Blazor Webassembly and other .NET client side technologies", Version = "v1.0" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "iReferAPI By Westline Software L.L.C.", Description = "iReferAPI is used to facilitate all database operations required by iRefer APP", Version = "v1.0" });
             });
 
             services.AddControllersWithViews()
