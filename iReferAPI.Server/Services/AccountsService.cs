@@ -47,7 +47,8 @@ namespace iReferAPI.Server.Services
                 ReferralCode = referralcode,
                 AgencyId = agencyId,
                 CreatedDate = DateTime.UtcNow,
-                UserId = userId
+                UserId = userId,
+                Agency= agency
             };
 
             await _db.Accounts.AddAsync(item);

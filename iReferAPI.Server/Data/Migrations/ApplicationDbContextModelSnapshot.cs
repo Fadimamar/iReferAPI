@@ -297,6 +297,64 @@ namespace iReferAPI.Server.Data.Migrations
                     b.ToTable("AgencyRoles");
                 });
 
+            modelBuilder.Entity("iReferAPI.Models.FriendOffer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AgencyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<float>("DiscountRate")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LandingPage")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("NoExpiration")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OfferType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SalesPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgencyId");
+
+                    b.ToTable("FriendOffers");
+                });
+
             modelBuilder.Entity("iReferAPI.Models.Reward", b =>
                 {
                     b.Property<string>("Id")
@@ -497,6 +555,13 @@ namespace iReferAPI.Server.Data.Migrations
                 {
                     b.HasOne("iReferAPI.Models.Agency", "Agency")
                         .WithMany("AgencyRoles")
+                        .HasForeignKey("AgencyId");
+                });
+
+            modelBuilder.Entity("iReferAPI.Models.FriendOffer", b =>
+                {
+                    b.HasOne("iReferAPI.Models.Agency", "Agency")
+                        .WithMany()
                         .HasForeignKey("AgencyId");
                 });
 

@@ -33,3 +33,4 @@ C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Mode
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.AssemblyInfo.cs
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.dll
 C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.pdb
+C:\Workspaces\iReferAPI\iReferAPI.Models\obj\Debug\netstandard2.0\iReferAPI.Models.csprojAssemblyReference.cache

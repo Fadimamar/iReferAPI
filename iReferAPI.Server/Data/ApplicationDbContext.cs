@@ -22,5 +22,6 @@ namespace iReferAPI.Server.Data
         public DbSet<Reward>Rewards { get; set; }
         public DbSet<AgencyRole> AgencyRoles { get; set; }
         public DbSet<FriendOffer> FriendOffers { get; set; }
+        public DbSet<AgencyInvitation> AgencyInvitations { get; set; }
     }
 }

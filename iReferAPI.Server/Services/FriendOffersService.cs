@@ -55,7 +55,8 @@ namespace iReferAPI.Server.Services
                 Message = model.Message,
                 NoExpiration = model.NoExpiration,
                 IsDeleted = false,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                Agency=agency
             };
             await _db.FriendOffers.AddAsync(item);
             await _db.SaveChangesAsync();
@@ -82,13 +83,14 @@ namespace iReferAPI.Server.Services
                 AgencyId = model.AgencyId,
                 OfferType = OfferTypes.Link,
                 UserId = userId,
-                LandingPage=model.LandingPage,
+                LandingPage = model.LandingPage,
                 Description = model.Description,
                 ExpirationDate = model.ExpirationDate,
                 Message = model.Message,
                 NoExpiration = model.NoExpiration,
                 IsDeleted = false,
-                CreatedDate= DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                Agency = agency
         };
             await _db.FriendOffers.AddAsync(item);
             await _db.SaveChangesAsync();

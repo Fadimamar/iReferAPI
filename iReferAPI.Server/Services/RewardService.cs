@@ -58,7 +58,8 @@ namespace iReferAPI.Server.Services
                 Message = model.Message,
                 NoExpiration = model.NoExpiration,
                 IsDeleted = false,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                Agency=agency
             };
             await _db.Rewards.AddAsync(item);
             await _db.SaveChangesAsync();
@@ -90,7 +91,8 @@ namespace iReferAPI.Server.Services
                 Message = model.Message,
                 NoExpiration = model.NoExpiration,
                 IsDeleted = false,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                Agency=agency
             };
             await _db.Rewards.AddAsync(item);
             await _db.SaveChangesAsync();
@@ -123,7 +125,8 @@ namespace iReferAPI.Server.Services
                 NoExpiration = model.NoExpiration,
                 IsDeleted = false,
                 CreatedDate = DateTime.UtcNow,
-                CashAmount = model.CashAmount
+                CashAmount = model.CashAmount,
+                Agency=agency
             };
             await _db.Rewards.AddAsync(item);
             await _db.SaveChangesAsync();
@@ -158,7 +161,8 @@ namespace iReferAPI.Server.Services
                 Message = model.Message,
                 EquivalentDollarAmount = model.EquivalentDollarAmount,
                 PointsAmount = model.PointsAmount,
-                NoExpiration = model.NoExpiration
+                NoExpiration = model.NoExpiration,
+                Agency=agency
 
             };
             await _db.Rewards.AddAsync(item);

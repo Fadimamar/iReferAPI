@@ -71,7 +71,7 @@ namespace iReferAPI.Server.Services
                 {
                     
                     var result = await _userManger.AddToRoleAsync(employee, Role);
-                    var item = new AgencyRole { FirstName = employee.FirstName, LastName = employee.LastName, email = employee.Email, AgencyId = model.AgencyID, UserRoleID = (int)model.UserType, EmployeeUserID = employee.Id, UserId = userId };
+                    var item = new AgencyRole { FirstName = employee.FirstName, LastName = employee.LastName, email = employee.Email, AgencyId = model.AgencyID, UserRoleID = (int)model.UserType, EmployeeUserID = employee.Id, UserId = userId,Agency= agency };
 
                     var res = await _db.AgencyRoles.AddAsync(item);
                     await _db.SaveChangesAsync();
