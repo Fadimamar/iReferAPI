@@ -64,9 +64,11 @@ namespace iReferAPI.Server.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 var result = await _userService.LoginUserAsync(model);
 
                 if (result.IsSuccess)
+                   
                     return Ok(result);
 
                 return BadRequest(result);

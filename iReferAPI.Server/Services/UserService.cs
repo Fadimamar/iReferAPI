@@ -124,15 +124,23 @@ namespace iReferAPI.Server.Services
             }
 
             var result = await _userManger.CheckPasswordAsync(user, model.Password);
-
+            var emailConfirmed = await _userManger.IsEmailConfirmedAsync(user);
             if (!result)
+
                 return new UserManagerResponse
                 {
                     Message = "Invalid password",
                     IsSuccess = false,
                 };
-            var roles = await _userManger.GetRolesAsync(user);
+                else if (!emailConfirmed)
+                return new UserManagerResponse
+                {
+                    Message = "Email is not Confirmed Yet! Follow the link sent by email to confirm account",
+                    IsSuccess = false,
+                };
             
+                var roles = await _userManger.GetRolesAsync(user);
+
             var claims = new[]
             {
                 new Claim("Email", model.Email),
@@ -140,30 +148,27 @@ namespace iReferAPI.Server.Services
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
                 new Claim(ClaimTypes.Role,roles[0])
-            };
-            //foreach (string role in roles)
-            //    { 
-            //    i
-            //    claims[claims.Length+1]
-            //}
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
+                };
+                
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["AuthSettings:Issuer"],
-                audience: _configuration["AuthSettings:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddDays(30),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["AuthSettings:Issuer"],
+                    audience: _configuration["AuthSettings:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(30),
+                    signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
 
-            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
+                string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new UserManagerResponse
-            {
-                UserInfo = claims.ToDictionary(c => c.Type, c => c.Value),
-                Message = tokenAsString,
-                IsSuccess = true,
-                ExpireDate = token.ValidTo
-            };
+                return new UserManagerResponse
+                {
+                    UserInfo = claims.ToDictionary(c => c.Type, c => c.Value),
+                    Message = tokenAsString,
+                    IsSuccess = true,
+                    ExpireDate = token.ValidTo
+                };
+           
         }
 
         public async Task<UserManagerResponse> ConfirmEmailAsync(string UserId, string token)

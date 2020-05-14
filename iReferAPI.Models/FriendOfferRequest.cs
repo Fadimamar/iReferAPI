@@ -11,10 +11,8 @@ namespace iReferAPI.Models
         [Required]
         [StringLength(100)]
         public string Description { get; set; }
-
-        [Column(TypeName = "date")]
+               
         public DateTime? ExpirationDate { get; set; }
-        
         [Required]
         [StringLength(500)]
         public string Message { get; set; }
