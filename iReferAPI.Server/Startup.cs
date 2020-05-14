@@ -76,11 +76,12 @@ namespace iReferAPI.Server
             });
 
             services.AddScoped<IUserService, UserService>();
-            services.AddTransient<IMailService, SendGridMailService>();
+            services.AddSingleton<IMailService, SendGridMailService>();
             services.AddTransient<IAgenciesService, AgenciesService>();
             services.AddTransient<IAccountsService, AccountsService>();
             services.AddTransient<IRewardsService, RewardsService>();
             services.AddTransient<IAgenciesRolesService, AgenciesRolesService>();
+            services.AddTransient<IAgencyInvitationsService, AgencyInvitationsService>();
             services.AddRazorPages();
             services.AddSwaggerGen(options =>
             {

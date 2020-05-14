@@ -21,9 +21,9 @@ namespace iReferAPI.Server.Services
         Task<AgencyInvitation> MarkSentAsync(string Id, string userId);
         Task<AgencyInvitation> MarkViewedAsync(string Id, string userId);
         Task<AgencyInvitation> MarkSubscribed(string Id, string userId);
+    }
 
-
-        public class AgencyInvitationsService : IAgencyInvitationsService
+    public class AgencyInvitationsService : IAgencyInvitationsService
         {
 
             private readonly ApplicationDbContext _db;
@@ -179,7 +179,7 @@ namespace iReferAPI.Server.Services
 
 
         }
-    }
+   
 }
 
 
