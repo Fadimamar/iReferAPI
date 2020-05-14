@@ -108,7 +108,7 @@ namespace iReferAPI.Server.Controllers
 
                 return BadRequest(new OperationResponse<Reward>
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "Some properties are not valid"
                 });
             }
@@ -140,7 +140,7 @@ namespace iReferAPI.Server.Controllers
 
                 return BadRequest(new OperationResponse<Reward>
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "Some properties are not valid"
                 });
             }
@@ -171,7 +171,7 @@ namespace iReferAPI.Server.Controllers
 
                 return BadRequest(new OperationResponse<Reward>
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "Some properties are not valid"
                 });
             }
@@ -202,7 +202,7 @@ namespace iReferAPI.Server.Controllers
 
                 return BadRequest(new OperationResponse<Reward>
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "Some properties are not valid"
                 });
             }

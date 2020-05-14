@@ -108,7 +108,7 @@ namespace iReferAPI.Server.Controllers
 
                 return BadRequest(new OperationResponse<AgencyRole>
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "Some properties are not valid"
                 });
             }
