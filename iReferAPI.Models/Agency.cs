@@ -9,13 +9,7 @@ namespace iReferAPI.Models
     public class Agency : Record
     {
         
-
-        public Agency()
-        {
-            Accounts = new List<Account>();
-            AgencyRoles = new List<AgencyRole>();
-
-        }
+             
 
         [Required]
         [StringLength(100)]
@@ -41,9 +35,10 @@ namespace iReferAPI.Models
        
         [StringLength(256)]
         public string Logo { get; set; }
+             
 
-        public ICollection<Account> Accounts { get; set; }
-        public ICollection<AgencyRole> AgencyRoles { get; set; }
+
+       
     }
    
 }

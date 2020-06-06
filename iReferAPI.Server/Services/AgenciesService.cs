@@ -13,8 +13,10 @@ namespace iReferAPI.Server.Services
     public interface IAgenciesService
     {
      
-        IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber, string userId, out int totalAgencies);
-        IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber,  out int totalAgencies);
+        IEnumerable<Agency> GetAllAgenciesPagedAsync(int pageSize, int pageNumber, string userId, out int totalAgencies);
+        IEnumerable<Agency> GetAllAgenciesPagedAsync(int pageSize, int pageNumber,  out int totalAgencies);
+        IEnumerable<Agency> GetAllAgenciesAsync(string userId);
+        IEnumerable<Agency> GetAllAgenciesAsync();
         IEnumerable<Agency> SearchAgenciesAsync(string query, int pageSize, int pageNumber, string userId, out int totalAgencies);
         Task<Agency> AddAgencyAsync(string agencyname, string address1, string address2, string
             website, string phonenumber, string state, string zipcode, string city, string phoneno, String logo, string userId);
@@ -114,7 +116,8 @@ namespace iReferAPI.Server.Services
             Address2 = address2,
             Address1 = address1,
             PhoneNo = phoneno,
-            UserId = userId
+            UserId = userId,
+           
         };
 
         await _db.Agencies.AddAsync(Agency);
@@ -167,7 +170,7 @@ namespace iReferAPI.Server.Services
         return Agency;
     }
 
-    public IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber, string userId, out int totalAgencies)
+    public IEnumerable<Agency> GetAllAgenciesPagedAsync(int pageSize, int pageNumber, string userId, out int totalAgencies)
     {
         // total Agencys 
 
@@ -178,21 +181,31 @@ namespace iReferAPI.Server.Services
         totalAgencies = AllAgencies.Count();
 
         var Agencys = AllAgencies.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
-        foreach (var item in Agencys)
-        {
-            item.Accounts = _db.Accounts.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
-        }
+        //foreach (var item in Agencys)
+        //{
+        //    item.AgencyRoles = _db.AgencyRoles.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
+        //}
 
         return Agencys;
     }
+        public IEnumerable<Agency> GetAllAgenciesAsync(string userId)
+        {
 
-    public async Task<Agency> GetAgencyById(string id, string userId)
+            var AllAgencies = _db.Agencies.Where(p => !p.IsDeleted && p.UserId == userId);
+
+           
+                
+
+            return AllAgencies;
+        }
+
+        public async Task<Agency> GetAgencyById(string id, string userId)
         {
             var Agency = await _db.Agencies.FindAsync(id);
             if (Agency.UserId != userId || Agency.IsDeleted)
                 return null;
 
-            Agency.AgencyRoles = _db.AgencyRoles.Where(i => !i.IsDeleted && i.UserId == userId && i.AgencyId == id).ToArray();
+            //Agency.AgencyRoles = _db.AgencyRoles.Where(i => !i.IsDeleted && i.UserId == userId && i.AgencyId == id).ToArray();
 
             return Agency;
         }
@@ -217,15 +230,15 @@ namespace iReferAPI.Server.Services
             totalAgencies = allAgencys.Count();
 
             var Agencys = allAgencys.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
-            foreach (var item in Agencys)
-            {
-                item.Accounts = _db.Accounts.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
-            }
+            //foreach (var item in Agencys)
+            //{
+            //    item.AgencyRoles = _db.AgencyRoles.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
+            //}
 
             return Agencys;
         }
 
-        public IEnumerable<Agency> GetAllAgenciesAsync(int pageSize, int pageNumber, out int totalAgencies)
+        public IEnumerable<Agency> GetAllAgenciesPagedAsync(int pageSize, int pageNumber, out int totalAgencies)
         {
 
             var AllAgencies = _db.Agencies.Where(p => !p.IsDeleted);
@@ -233,12 +246,19 @@ namespace iReferAPI.Server.Services
             totalAgencies = AllAgencies.Count();
 
             var Agencys = AllAgencies.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
-            foreach (var item in Agencys)
-            {
-                item.Accounts = _db.Accounts.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
-            }
+            //foreach (var item in Agencys)
+            //{
+            //    item.AgencyRoles = _db.AgencyRoles.Where(i => !i.IsDeleted && i.AgencyId == item.Id).ToArray();
+            //}
 
             return Agencys;
+        }
+        public IEnumerable<Agency> GetAllAgenciesAsync()
+        {
+
+            var AllAgencies = _db.Agencies.Where(p => !p.IsDeleted);
+
+            return AllAgencies;
         }
     }
 }

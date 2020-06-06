@@ -38,8 +38,35 @@ namespace iReferAPI.Server.Controllers
         };
 
         #region Get
-        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Agency>))]
+        [ProducesResponseType(200, Type = typeof(CollectionResponse<Agency>))]
         [HttpGet]
+        public IActionResult GetAgencies()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var SysAdminRolerole = User.IsInRole("SysAdmin");
+            IEnumerable<Agency> Agencies;
+            
+            if (SysAdminRolerole)
+            {
+                Agencies = _AgenciesService.GetAllAgenciesAsync();
+            }
+            else
+            {
+                Agencies = _AgenciesService.GetAllAgenciesAsync(userId);
+            }
+            if (Agencies != null)
+                return Ok(new CollectionResponse<Agency>
+                {
+                    Count = Agencies.Count(),
+                    IsSuccess = true,
+                    Message = "Rewards retrieved successfully!",
+                    Records = Agencies
+                });
+            else
+                return NotFound();
+        }
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Agency>))]
+        [HttpGet("Pages")]
         public IActionResult Get(int page)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -50,11 +77,11 @@ namespace iReferAPI.Server.Controllers
             IEnumerable<Agency> Agencies;
             if (SysAdminRolerole)
             {
-                Agencies = _AgenciesService.GetAllAgenciesAsync(PAGE_SIZE, page,  out totalAgencies);
+                Agencies = _AgenciesService.GetAllAgenciesPagedAsync(PAGE_SIZE, page,  out totalAgencies);
             }
             else
             {
-                Agencies = _AgenciesService.GetAllAgenciesAsync(PAGE_SIZE, page, userId, out totalAgencies);
+                Agencies = _AgenciesService.GetAllAgenciesPagedAsync(PAGE_SIZE, page, userId, out totalAgencies);
             }
             int totalPages = 0;
             if (totalAgencies % PAGE_SIZE == 0)

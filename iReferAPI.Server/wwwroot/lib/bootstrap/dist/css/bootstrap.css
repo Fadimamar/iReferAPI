@@ -5243,7 +5243,8 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 @-webkit-keyframes progress-bar-stripes {
-  from {
+  
+    {
     background-position: 1rem 0;
   }
   to {

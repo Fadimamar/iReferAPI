@@ -16,7 +16,7 @@ namespace iReferAPI.Server.Controllers
     [Authorize]
     public class AccountsController : ControllerBase
     {
-
+        private const int PAGE_SIZE = 10;
         private readonly IAccountsService _accountsService;
 
         public AccountsController(IAccountsService accountsSerivce)
@@ -25,38 +25,113 @@ namespace iReferAPI.Server.Controllers
         }
 
         #region GET
-        [ProducesResponseType(200, Type = typeof(CollectionResponse<Account>))]
-        [HttpGet("agency={agencyId}")]
-        public IActionResult Get(string agency)
-        {
-            if (agency == null)
-                return NotFound();
+        [ProducesResponseType(200, Type = typeof(OperationResponse<Agency>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<Agency>))]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByAccountID(string id)
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var Accounts = _accountsService.GetAgencyAccounts(agency, userId);
-            return Ok(new CollectionResponse<Account>
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var account = await _accountsService.GetAccountByIdAsync(id);
+            if (account == null)
+                return BadRequest(new OperationResponse<string>
+                {
+                    IsSuccess = false,
+                    Message = "Invalid operation",
+                });
+
+            return Ok(new OperationResponse<Account>
             {
-                Count = Accounts.Count(),
+                Record = account,
+                Message = "Account retrieved successfully!",
                 IsSuccess = true,
-                Message = "Accounts retrieved successfully!",
-                Records = Accounts
+                OperationDate = DateTime.UtcNow
             });
+
+        }
+        [ProducesResponseType(200, Type = typeof(CollectionResponse<Account>))]
+        [HttpGet("Agency={agencyId}")]
+        public IActionResult GetByAgencyID(string Agency, int page)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var allowed = User.IsInRole("SysAdmin") || User.IsInRole("AgencyAdmin");
+            int totalAccounts = 0;
+            if (page == 0)
+                page = 1;
+            IEnumerable<Account> Accounts;
+            if (allowed)
+            {
+                Accounts = _accountsService.GetAgencyAccounts(Agency, PAGE_SIZE, page, out totalAccounts);
+
+
+                int totalPages = 0;
+                if (totalAccounts % PAGE_SIZE == 0)
+                    totalPages = totalAccounts / PAGE_SIZE;
+                else
+                    totalPages = (totalAccounts / PAGE_SIZE) + 1;
+
+                return Ok(new CollectionPagingResponse<Account>
+                {
+                    Count = totalAccounts,
+                    IsSuccess = true,
+                    Message = "Agencies received successfully!",
+                    OperationDate = DateTime.UtcNow,
+                    PageSize = PAGE_SIZE,
+                    Page = page,
+                    Records = Accounts
+                });
+            }
+            else
+                return Unauthorized(new OperationResponse<string>
+                {
+                    IsSuccess = false,
+                    Message = "Not Authorized",
+                });
+            
+
         }
 
         // Get not acheived Accounts 
         [ProducesResponseType(200, Type = typeof(CollectionResponse<Account>))]
-        [HttpGet("notachieved")]
-        public IActionResult Get()
+        [HttpGet()]
+        public IActionResult Get(int page)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var Accounts = _accountsService.GetAllAccounts(userId);
-            return Ok(new CollectionResponse<Account>
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var allowed = User.IsInRole("SysAdmin") || User.IsInRole("AgencyAdmin");
+            int totalAccounts = 0;
+            if (page == 0)
+                page = 1;
+            IEnumerable<Account> Accounts;
+            if (allowed)
             {
-                Count = Accounts.Count(),
-                IsSuccess = true,
-                Message = "Accounts retrieved successfully!",
-                Records = Accounts
-            });
+                Accounts = _accountsService.GetAllAccounts( PAGE_SIZE, page, out totalAccounts);
+
+
+                int totalPages = 0;
+                if (totalAccounts % PAGE_SIZE == 0)
+                    totalPages = totalAccounts / PAGE_SIZE;
+                else
+                    totalPages = (totalAccounts / PAGE_SIZE) + 1;
+
+                return Ok(new CollectionPagingResponse<Account>
+                {
+                    Count = totalAccounts,
+                    IsSuccess = true,
+                    Message = "Accounts received successfully!",
+                    OperationDate = DateTime.UtcNow,
+                    PageSize = PAGE_SIZE,
+                    Page = page,
+                    Records = Accounts
+                });
+            }
+            else
+                return Unauthorized(new OperationResponse<string>
+                {
+                    IsSuccess = false,
+                    Message = "Not Authorized",
+                });
+
         }
 
         #endregion

@@ -10,15 +10,15 @@ namespace iReferAPI.Server.Services
     public interface IAccountsService
     {
 
-        IEnumerable<Account> GetAgencyAccounts(string agencyid, string userId);
+        IEnumerable<Account> GetAgencyAccounts(string agencyid,int pageSize, int pageNumber, out int totalAccounts);
 
-        IEnumerable<Account> GetAllAccounts(string userId);
+        IEnumerable<Account> GetAllAccounts(int pageSize, int pageNumber, out int totalAccounts);
 
         Task<Account> CreateAccountAsync(string agencyId, string referralUrl, string referralcode, string userId);
 
         Task<Account> EditAccountsAsync(string accountId, string referralUrl, string referralcode, string userId);
 
-        
+        Task<Account> GetAccountByIdAsync(string id);
 
         Task<Account> DeleteAccountAsync(string itemId, string userId);
 
@@ -87,20 +87,48 @@ namespace iReferAPI.Server.Services
             return item;
         }
 
-        public IEnumerable<Account> GetAgencyAccounts(string agencyid, string userId)
+        public IEnumerable<Account> GetAgencyAccounts(string agencyid, int pageSize, int pageNumber, out int totalAccounts)
+
         {
-            var Accounts = _db.Accounts.Where(i => i.AgencyId == agencyid && !i.IsDeleted).ToArray();
+
+            var AllAccounts = _db.Accounts.Where(i => i.AgencyId == agencyid && !i.IsDeleted);
+
+            totalAccounts = AllAccounts.Count();
+
+            var Accounts = AllAccounts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
+            
 
             return Accounts;
+
+          
+        }
+        public  async Task<Account> GetAccountByIdAsync(string id)
+        {
+            var Account = await _db.Accounts.FindAsync(id);
+            if (Account.IsDeleted)
+                return null;
+
+            
+
+            return Account;
         }
 
-        public IEnumerable<Account> GetAllAccounts(string userId)
+        public IEnumerable<Account> GetAllAccounts(int pageSize, int pageNumber, out int totalAccounts)
+
         {
-            var Accounts = _db.Accounts.Where(i => !i.IsDeleted).ToArray();
+
+            var AllAccounts = _db.Accounts.Where(i =>  !i.IsDeleted);
+
+            totalAccounts = AllAccounts.Count();
+
+            var Accounts = AllAccounts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
+
 
             return Accounts;
+
+
         }
 
-        
+
     }
 }

@@ -29,10 +29,10 @@ namespace iReferAPI.Server.Controllers
         #region GET
         //get all agency active Roles
         [ProducesResponseType(200, Type = typeof(OperationResponse<Reward>))]
-        [HttpGet("ActiveOffer/AgencyId={agencyId}")]
+        [HttpGet("activeoffer")]
         // [Authorize(Roles = "AgencyAdmin,SysAdmin")]
 
-        public IActionResult GetActiveOffer(string agencyId)
+        public IActionResult GetActiveOffer([FromQuery]string agencyId)
         {
             if (agencyId == null)
                 return NotFound();
@@ -54,9 +54,9 @@ namespace iReferAPI.Server.Controllers
         }
         //get all active Roles
         [ProducesResponseType(200, Type = typeof(CollectionResponse<Reward>))]
-        [HttpGet("Alloffers/AgencyId={agencyId}")]
+        [HttpGet("alloffers")]
         // [Authorize(Roles = "SysAdmin")]
-        public IActionResult GetAllOffers(string agencyId)
+        public IActionResult GetAllOffers([FromQuery]string agencyId)
         {
 
 

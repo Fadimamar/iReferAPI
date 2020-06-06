@@ -253,6 +253,52 @@ namespace iReferAPI.Server.Data.Migrations
                     b.ToTable("Agencies");
                 });
 
+            modelBuilder.Entity("iReferAPI.Models.AgencyInvitation", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AgencyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateInvited")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("HasSubscribed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgencyId");
+
+                    b.ToTable("AgencyInvitations");
+                });
+
             modelBuilder.Entity("iReferAPI.Models.AgencyRole", b =>
                 {
                     b.Property<string>("Id")
@@ -547,7 +593,14 @@ namespace iReferAPI.Server.Data.Migrations
             modelBuilder.Entity("iReferAPI.Models.Account", b =>
                 {
                     b.HasOne("iReferAPI.Models.Agency", "Agency")
-                        .WithMany("Accounts")
+                        .WithMany()
+                        .HasForeignKey("AgencyId");
+                });
+
+            modelBuilder.Entity("iReferAPI.Models.AgencyInvitation", b =>
+                {
+                    b.HasOne("iReferAPI.Models.Agency", "Agency")
+                        .WithMany()
                         .HasForeignKey("AgencyId");
                 });
 

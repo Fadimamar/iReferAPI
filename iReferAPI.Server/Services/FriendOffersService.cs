@@ -86,7 +86,6 @@ namespace iReferAPI.Server.Services
                 LandingPage = model.LandingPage,
                 Description = model.Description,
                 ExpirationDate = model.ExpirationDate,
-                Message = model.Message,
                 NoExpiration = model.NoExpiration,
                 IsDeleted = false,
                 CreatedDate = DateTime.UtcNow,

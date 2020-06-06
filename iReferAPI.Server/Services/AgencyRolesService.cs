@@ -17,9 +17,9 @@ namespace iReferAPI.Server.Services
 
         IEnumerable<AgencyRole> GetAgencyRoles( string userId);
 
-        Task<AgencyRole> AddAgencyRoleAsync(AgencyRoleRequest model, string userId);
+        Task<AgencyRole> AddAgencyRoleByIDAsync(AgencyRoleRequestByID model, string userId);
 
-
+        Task<AgencyRole> AddAgencyRoleByEmailAsync(AgencyRoleRequestByEmail model, string userId);
 
         Task<AgencyRole> DeleteAgencyRoleAsync(string AgencyRoleID, string userId);
 
@@ -37,7 +37,7 @@ namespace iReferAPI.Server.Services
             _userManger = userManager;
         }
 
-        public async Task<AgencyRole> AddAgencyRoleAsync(AgencyRoleRequest model, string userId)
+        public async Task<AgencyRole> AddAgencyRoleByIDAsync(AgencyRoleRequestByID model, string userId)
         {
             
                 
@@ -96,7 +96,65 @@ namespace iReferAPI.Server.Services
 
 
         }
+        public async Task<AgencyRole> AddAgencyRoleByEmailAsync(AgencyRoleRequestByEmail model, string userId)
+        {
 
+
+
+            if (model == null)
+                throw new NullReferenceException("Model is null");
+
+
+
+            String Role;
+            switch (model.UserType)
+            {
+                case UserTypes.AgencyAdmin:
+                    Role = "AgencyAdmin";
+                    break;
+                case UserTypes.AgencyUser:
+                    Role = "AgencyUser";
+                    break;
+                default:
+                    Role = "AgencyUser";
+                    break;
+            }
+
+
+
+            var agency = await _db.Agencies.FindAsync(model.AgencyID);
+            if (agency != null)
+            {
+                var employee = await _userManger.FindByNameAsync(model.Email);
+                if (employee != null)
+                {
+
+                    var result = await _userManger.AddToRoleAsync(employee, Role);
+                    var item = new AgencyRole { FirstName = employee.FirstName, LastName = employee.LastName, email = employee.Email, AgencyId = model.AgencyID, UserRoleID = (int)model.UserType, EmployeeUserID = employee.Id, UserId = userId, Agency = agency };
+
+                    var res = await _db.AgencyRoles.AddAsync(item);
+                    await _db.SaveChangesAsync();
+                    return item;
+
+
+
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+
+
+
+
+        }
         public async Task<AgencyRole> DeleteAgencyRoleAsync(string AgencyRoleID, string userId)
         {
             var item = await _db.AgencyRoles.FindAsync(AgencyRoleID);

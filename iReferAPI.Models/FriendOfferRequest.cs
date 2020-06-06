@@ -13,16 +13,9 @@ namespace iReferAPI.Models
         public string Description { get; set; }
                
         public DateTime? ExpirationDate { get; set; }
-        [Required]
-        [StringLength(500)]
-        public string Message { get; set; }
-
-        public float DiscountRate { get; set; }
-
         public bool NoExpiration { get; set; }
-        [StringLength(100)]
         public string LandingPage { get; set; }
-        public string SalesPhoneNumber { get; set; }
+       
         
         public string AgencyId { get; set; }
     }
@@ -35,16 +28,13 @@ namespace iReferAPI.Models
 
         public DateTime? ExpirationDate { get; set; }
        
-        public int RewardReviewDays { get; set; }
-
-        [Required]
+         [Required]
 
         public string Message { get; set; }
-
-        
+               
         public bool NoExpiration { get; set; }
         public float DiscountRate { get; set; }
-
+        public string SalesPhoneNumber { get; set; }
         public string AgencyId { get; set; }
     }
     

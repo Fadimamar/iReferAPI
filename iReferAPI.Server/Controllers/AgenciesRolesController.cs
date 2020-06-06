@@ -29,19 +29,19 @@ namespace iReferAPI.Server.Controllers
         #region GET
         //get all agency active Roles
         [ProducesResponseType(200, Type = typeof(CollectionResponse<AgencyRole>))]
-        [HttpGet("agency={agencyId}")]
+        [HttpGet("agencyid={agencyId}")]
       // [Authorize(Roles = "AgencyAdmin,SysAdmin")]
         
-        public IActionResult Get(string agency)
+        public IActionResult Get(string agencyid)
         {
-            if (agency == null)
+            if (agencyid == null)
                 return NotFound();
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var role = User.FindFirst(ClaimTypes.Role).Value;
             if (role == "SysAdmin" || role == "AgencyAdmin")
             {
-                var Roles = _agenciesRolesService.GetAgencyRoles(agency, userId);
+                var Roles = _agenciesRolesService.GetAgencyRoles(agencyid, userId);
                 return Ok(new CollectionResponse<AgencyRole>
                 {
                     Count = Roles.Count(),
@@ -84,10 +84,10 @@ namespace iReferAPI.Server.Controllers
         #region POST
         [ProducesResponseType(200, Type = typeof(OperationResponse<AgencyRole>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<AgencyRole>))]
-        [HttpPost("AddRole")]
+        [HttpPost("AddRoleByID")]
         // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
 
-        public async Task<IActionResult> Post([FromBody]AgencyRoleRequest model)
+        public async Task<IActionResult> Post([FromBody]AgencyRoleRequestByID model)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,39 @@ namespace iReferAPI.Server.Controllers
                 if (r == "SysAdmin" || r == "AgencyAdmin")
                 {
 
-                    var role = await _agenciesRolesService.AddAgencyRoleAsync(model, userId);
+                    var role = await _agenciesRolesService.AddAgencyRoleByIDAsync(model, userId);
+
+                    return Ok(new OperationResponse<AgencyRole>
+                    {
+                        IsSuccess = true,
+                        Message = "Agency Role has been created successfully",
+                        Record = role
+                    });
+                }
+
+                return BadRequest(new OperationResponse<AgencyRole>
+                {
+                    IsSuccess = false,
+                    Message = "Some properties are not valid"
+                });
+            }
+            return Unauthorized();
+        }
+        [ProducesResponseType(200, Type = typeof(OperationResponse<AgencyRole>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<AgencyRole>))]
+        [HttpPost("AddRoleByEmail")]
+        // [Authorize(Roles = "AgencyAdmin, SysAdmin")]
+
+        public async Task<IActionResult> Post([FromBody]AgencyRoleRequestByEmail model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var r = User.FindFirst(ClaimTypes.Role).Value;
+                if (r == "SysAdmin" || r == "AgencyAdmin")
+                {
+
+                    var role = await _agenciesRolesService.AddAgencyRoleByEmailAsync(model, userId);
 
                     return Ok(new OperationResponse<AgencyRole>
                     {
@@ -117,7 +149,7 @@ namespace iReferAPI.Server.Controllers
 
         #endregion
 
-     
+
 
 
 
